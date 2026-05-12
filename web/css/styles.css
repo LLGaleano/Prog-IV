@@ -1,0 +1,29 @@
+header{
+    background: #1B263B;
+    display: flex;
+    justify-content: right;
+    border: 2px solid #ff0000c7;
+}
+
+nav{
+    background: #415A77;
+}
+
+main{
+    background: #E0E1DD;
+}
+
+.logoHeader{
+    width: 35%;
+    border: 2px solid #ff0000c7;
+}
+
+.NavPrincipal{
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: 20px;    
+    background-color: #415A77; 
+
+}
