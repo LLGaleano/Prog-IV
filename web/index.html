@@ -1,27 +1,57 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
     
 <head>
     
-    <title>Document</title>
+    <title>Cursos Prog IV</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link href="css/bootstrap.min.css"/>
     <link rel="stylesheet" href="css/styles.css"/>
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
 </head>
 <body>
-    <header> 
-        <div>
-            <img class="logoHeader" src="img/Fcad-Logo.png">
+    <header class="header-principal"> 
+        <div class="logo-img hd">
+            <img src="img/Fcad-Logo.png" alt="logo de la Facultad">
+        </div>
+        <div class="titulo hd">
+            <h1>Cursos</h1>
+        </div>
+        <div class="icono-perfil hd">
+            <div class="icono-perfil2">
+                <i class="bx bx-user"></i>
+                <span>Usuario123</span>
+            </div>
         </div>
     </header>
 
-
-    <nav>
-        <ul class="NavPrincipal">
-            <li>Inicio</li><li>Cursos</li><li>Estudiantes</li><li>Inscripciones</li>
+    <nav class="nav-principal">
+        <ul class="lista-principal">
+            <li><a class="link-nav" href="#">Inicio</a></li>
+            <li><a class="link-nav" href="#">Cursos</a></li>
+            <li><a class="link-nav" href="#">Estudiantes</a></li>
+            <li><a class="link-nav" href="#">Inscriptos</a></li>
         </ul>
     </nav>
 
     <main>
-        Main
+        <section class="container-cards">
+            <div class="card">
+                <h3>Cursos</h3>
+                <p>Total de cursos activos: </p>
+                <a href="cursos.html" class="link-cards">Entrar</a> 
+            </div>
+            <div class="card">
+                <h3>Estudiantes</h3>
+                <p>Total de estudiantes inscriptos:</p>
+                <a href="estudiantes.html" class="link-cards">Entrar</a>
+            </div>
+            <div class="card">
+                <h3>Inscriptos</h3>
+                <p>Lorem ipsum dolor sit amet</p>
+                <a href="inscriptos.html" class="link-cards">Entrar</a> 
+            </div>
+        </section>
     </main>
 
     <footer>

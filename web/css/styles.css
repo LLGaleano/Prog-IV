@@ -1,29 +1,107 @@
+/* las clases en HTML se ponen asi: clase-1, sos un pancho lauta pusiste una CorteAsi*/
+
 header{
     background: #1B263B;
+}
+
+.header-principal{
     display: flex;
-    justify-content: right;
-    border: 2px solid #ff0000c7;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    width: 100%;
 }
 
+/* aca para centrar el icono de perfil tuve que dividir en 3 las secciones del header y asi manejarlas bien dentro del head, puse el flex 1 para que repartan el espacio del header x asi decirlo */
+.hd{
+    flex: 1;
+}
+
+.logo-img{
+    display: flex;
+    justify-content: flex-start;
+}
+
+.titulo{
+    text-align: center;
+}
+
+/* tuve que hacer dos iconos de perfil porque no se alineaba el logo con el usuario */
+.icono-perfil{
+    display: flex;
+    justify-content: flex-end;
+    color: #F8F9FA;
+}
+
+.icono-perfil2 {
+    padding: 5px 15px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+h1{
+    color: #F8F9FA;
+}
 nav{
-    background: #415A77;
+    background: #1B2631;
 }
 
-main{
-    background: #E0E1DD;
-}
-
-.logoHeader{
-    width: 35%;
-    border: 2px solid #ff0000c7;
-}
-
-.NavPrincipal{
+.lista-principal{
     list-style-type: none;
-    margin: 0;
-    padding: 0;
     display: flex;
     gap: 20px;    
     background-color: #415A77; 
-
+    color: #F8F9FA;
 }
+
+main{
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    width: auto;
+    height: 20vh;
+    justify-content: space-around;
+    background: #F8F9FA;
+    text-align: center;
+}
+
+body{
+    background: #F8F9FA;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.container-cards{
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+}
+
+.card{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border: 2px solid #DEE2E6;
+    border-radius: 8px;
+    width: 80%;
+    height: 25vh;
+    width: 25vh;
+    background: #FFFFFF;
+}
+
+.link-cards:hover{
+    background: #4b6f97;
+}
+
+.link-cards {
+    margin-top: 20px;
+    padding: 10px 15px;
+    background: #415A77;
+    /* border: 2px solid #003366; */
+    border-radius: 5px;
+    cursor: pointer; /*Esto para que muestre la manito al pasar el mouse x arriba*/
+}
+
+.link-cards { text-decoration: none; color: white; }
+.link-nav { text-decoration: none; color: white; }
+    /* esto hace q no quede el azul feo cuando linkeo a otra pag*/
