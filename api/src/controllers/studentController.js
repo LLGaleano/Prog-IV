@@ -26,12 +26,6 @@ const searchStudent = async (req, res) => {
         const { id } = req.params;
         const student = await studentService.searchStudentID(parseInt(id));
 
-        if (!student) {
-            return res.status(404).json({
-                mensaje: 'Estudiante no encontrado'
-            });
-        }
-
         res.json(student);
 
     } catch (error) { 
@@ -43,9 +37,53 @@ const searchStudent = async (req, res) => {
         });
 
     }
-}
+};
+
+const createStudent = async (req, res) => {
+    try {
+
+        const studentData = req.body;
+        
+        const {
+            documento,
+            apellido,
+            nombres,
+            email,
+            fecha_nacimiento,
+            activo
+        } = studentData;
+
+        if (
+            !documento ||
+            !apellido ||
+            !nombres ||
+            !email ||
+            !fecha_nacimiento ||
+            activo === undefined
+        ) {
+            return res.status(400).json({
+                error: 'Faltan campos obligatorios'
+            });
+        }
+
+        const newStudent = await studentService.createStudent(studentData);
+
+        res.status(201).json(newStudent);
+
+    } catch (error) {
+
+        console.log(error);
+
+        res.status(500).json({
+            error: 'Error creando estudiante'
+        });
+
+    }
+
+};
 
 module.exports = {
     getStudents,
-    searchStudent
+    searchStudent,
+    createStudent,
 };

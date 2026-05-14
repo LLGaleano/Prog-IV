@@ -23,7 +23,50 @@ const searchStudentID = async (id) => {
 
 }
 
+const createStudent = async (studentData) => {
+
+    const {
+        documento,
+        apellido,
+        nombres,
+        email,
+        fecha_nacimiento,
+        activo
+    } = studentData;
+
+    const result = await pool.query(
+        `
+        INSERT INTO estudiantes
+        (
+            documento,
+            apellido,
+            nombres,
+            email,
+            fecha_nacimiento,
+            activo,
+            id_usuario_modificacion,
+            fecha_hora_modificacion
+        )
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+        RETURNING *
+        `,
+        [
+            documento,
+            apellido,
+            nombres,
+            email,
+            fecha_nacimiento,
+            activo,
+            1,
+            new Date()
+        ]
+    );
+
+    return result.rows[0];
+}
+
 module.exports = {
     getAllStudents,
-    searchStudentID
+    searchStudentID,
+    createStudent
 };
