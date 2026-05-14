@@ -8,6 +8,11 @@
     <link href="css/bootstrap.min.css"/>
     <link rel="stylesheet" href="css/styles.css"/>
     <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <script src="js/cursos.js" type="module" defer></script>
+    <!--Defer para que el script se ejecute después de que el DOM esté completamente cargado 
+    el type="module" para que el navegador trate el script como un módulo de 
+    JavaScript, lo que permite el uso de importaciones y exportaciones dentro del archivo cursos.js -->
+    
 </head>
 <body>
     <header class="header-principal"> 
@@ -38,7 +43,7 @@
         <section class="container-cards">
             <div class="card">
                 <h3>Cursos</h3>
-                <p>Total de cursos activos: </p>
+                <p>Total de cursos activos:<span id="total-cursos">...</span></p> </p>
                 <a href="cursos.html" class="link-cards">Entrar</a> 
             </div>
             <div class="card">
