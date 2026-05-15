@@ -1,11 +1,78 @@
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="css/global.css"/>
+    <link rel="stylesheet" href="css/estudiantes.css"/>
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
 </head>
 <body>
-    
+    <header class="header-principal"> 
+        <div class="logo-img hd">
+            <img src="img/Fcad-Logo.png" alt="logo de la Facultad">
+        </div>
+        <div class="titulo hd">
+            <h1>Estudiantes</h1>
+        </div>
+        <div class="icono-perfil hd">
+            <div class="icono-perfil2">
+                <i class="bx bx-user"></i>
+                <span>Usuario123</span>
+            </div>
+        </div>
+    </header>
+    <div class="contenedor-principal">
+        <aside class="contenedor-nav">
+            <nav>
+                <ul class="lista-principal">
+                    <li><a class="link-nav" href="#">Inicio</a></li>
+                    <li><a class="link-nav" href="#">Cursos</a></li>
+                    <li><a class="link-nav" href="#">Estudiantes</a></li>
+                    <li><a class="link-nav" href="#">Inscriptos</a></li>
+                </ul>
+            </nav>
+        </aside>
+        <main>
+            <div class="encabezado">
+                <h2>Listado de Estudiantes</h2>
+                <button class="btn-agregar">+ Nuevo Estudiante</button>
+            </div>
+            <div class="herramienta">
+                <input type="text" class="input-buscar" placeholder="Buscar por DNI o apellido"/>
+            </div>
+            <div class="contenedor-tabla">
+                <table class="tabla-estudiantes">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>DNI</th>
+                            <th>Apellido</th>
+                            <th>Nombre</th>
+                            <th>Email</th>
+                            <th>Fecha nacimiento</th>
+                            <th>Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbody">
+                        <tr>
+                            <td>1</td>
+                            <td>45678910</td>
+                            <td>Nicolas</td>
+                            <td>Calabrese</td>
+                            <td>nicolas.calabrese915@gmail.com</td>
+                            <td>9/12/2018</td>
+                            <td>Pasivo</td>
+                            <td>
+                                <button class="btn-accion"><i class="bx bx-show"></i></button>
+                                <button class="btn-accion"><i class="bx bx-pencil"></i></button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
 </body>
 </html>

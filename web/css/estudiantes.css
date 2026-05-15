@@ -1,0 +1,25 @@
+.encabezado{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.encabezado h2{
+    color: #001F3F;
+    margin: 0;
+}
+
+.btn-agregar{
+    background-color: #28a745;
+    color:white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.btn-agregar:hover{
+    background-color: #218838;
+}
