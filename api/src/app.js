@@ -9,9 +9,9 @@ const studentRoutes = require('./routes/studentRoutes');
 const pool = require('./db/connection');
 
 const app = express();
+app.use(cors());
 app.use(express.json())
 app.use('/students', studentRoutes);
-app.use(cors());
 ;
 
 pool.connect()

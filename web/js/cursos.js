@@ -18,6 +18,7 @@ datos.forEach(curso => {
 });});
 
 
+
 const datos = [
     {
         idCurso: 1,
@@ -75,3 +76,4 @@ app.get('/cursos', (req, res) => {
 });
 
 app.listen(port, () => console.log(`Servidor API Rest iniciado en http://localhost:${port}`));
+
