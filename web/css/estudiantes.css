@@ -23,3 +23,56 @@
 .btn-agregar:hover{
     background-color: #218838;
 }
+
+.herramienta{
+    margin-bottom: 20px;
+}
+
+.buscador{
+    width: 100%;
+    max-width: 400px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.contenedor-tabla{
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05px);
+}
+
+.tabla-estudiantes{
+    width: 100%;
+    /* border-collapse: collapse; */
+}
+
+.tabla-estudiantes th{
+    background-color: #003366;
+    color: white;
+    text-align: left;
+    padding: 10px;
+}
+
+.tabla-estudiantes td{
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+    color:#444;
+}
+
+.tabla-estudiantes tr:hover{
+    background-color: #f8f9fa;
+}
+
+.btn-accion{
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.2rem;
+    margin-right: 5px;
+}
+
+.btn-accion:hover{
+    background: #eee;
+}

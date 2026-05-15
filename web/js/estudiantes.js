@@ -19,8 +19,9 @@ document.addEventListener('DOMContentLoaded', async function() {
             // Usamos nombres genéricos por si las columnas de la BD cambian
             fila.innerHTML = `
                 <td>${estudiante.id || estudiante.id_estudiante || '-'}</td>
-                <td>${estudiante.nombres || '-'}</td>
+                <td>${estudiante.documento || estudiante.documento_estudiante || "-"}</td>
                 <td>${estudiante.apellido || '-'}</td>
+                <td>${estudiante.nombres || '-'}</td>
                 <td>${estudiante.email || '-'}</td>
             `;
             tabla.appendChild(fila);
