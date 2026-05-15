@@ -1,17 +1,3 @@
-/* las clases en HTML se ponen asi: clase-1, sos un pancho lauta pusiste una CorteAsi*/
-
-header{
-    background: #1B263B;
-}
-
-.header-principal{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px;
-    width: 100%;
-}
-
 /* aca para centrar el icono de perfil tuve que dividir en 3 las secciones del header y asi manejarlas bien dentro del head, puse el flex 1 para que repartan el espacio del header x asi decirlo */
 .hd{
     flex: 1;
@@ -47,23 +33,12 @@ nav{
     background: #1B2631;
 }
 
-.lista-principal{
-    list-style-type: none;
-    display: flex;
-    gap: 20px;    
-    background-color: #415A77; 
-    color: #F8F9FA;
-}
+
 
 main{
-    display: flex;
-    flex-direction: row;
-    gap: 20px;
-    width: auto;
-    height: 20vh;
-    justify-content: space-around;
+    flex-grow: 1;
+    padding: 40px;
     background: #F8F9FA;
-    text-align: center;
 }
 
 body{
@@ -73,35 +48,51 @@ body{
 
 .container-cards{
     display: flex;
-    gap: 20px;
-    justify-content: center;
+    gap: 30px;
+    justify-content: flex-start;
+    text-align: center;
+    flex-wrap: wrap;
 }
 
 .card{
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    border: 2px solid #DEE2E6;
     border-radius: 8px;
-    width: 80%;
-    height: 25vh;
-    width: 25vh;
-    background: #FFFFFF;
+    width: 260px;
+    min-height: 250px;
+    padding: 25px;
+    background-color: #FFFFFF;
+    border: none;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
 }
 
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.12);
+}
+
+.card p{
+    flex-grow: 1;
+    color: #555;
+}
+
+.card h3{
+    margin-top: 0;
+    margin-bottom: 15px;
+    color: #003366;
+}
 .link-cards:hover{
     background: #4b6f97;
 }
 
 .link-cards {
+    text-align: center;
     margin-top: 20px;
     padding: 10px 15px;
     background: #415A77;
-    /* border: 2px solid #003366; */
     border-radius: 5px;
+    text-decoration: none;
+    color: white;
     cursor: pointer; /*Esto para que muestre la manito al pasar el mouse x arriba*/
 }
-
-.link-cards { text-decoration: none; color: white; }
-.link-nav { text-decoration: none; color: white; }
-    /* esto hace q no quede el azul feo cuando linkeo a otra pag*/
