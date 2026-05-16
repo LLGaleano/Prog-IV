@@ -122,18 +122,20 @@ const modifyStudent = async (req, res) => {
         
         const existingDocumento = await studentService.searchStudentByDocumento(studentData.documento);
 
-        if (existingDocumento) {
+        //Si el documento ya existe y no pertenece al estudiante que estamos modificando, tiramos error
+        if (existingDocumento && existingDocumento.id_estudiante !== parseInt(id)) {
             return res.status(409).json({
                 error: 'Ya hay un alumno con ese documento'
-           });
+        });
         }
         
         const existingEmail = await studentService.searchStudentByEmail(studentData.email);
 
-        if (existingEmail) {
+        //Si el email ya existe y no pertenece al estudiante que estamos modificando, tiramos error
+        if (existingEmail && existingEmail.id_estudiante !== parseInt(id)) {
             return res.status(409).json({
                 error: 'Ya hay un alumno con ese email'
-           });
+        });
         }
 
         
