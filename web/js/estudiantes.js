@@ -15,7 +15,16 @@ document.addEventListener('DOMContentLoaded', async function() {
         // Llenamos la tabla con los datos
         datos.forEach(estudiante => {
             const fila = document.createElement('tr');
-            
+            let classEstado = '';
+            let textoEstado = '';
+
+            if( estudiante.activo===1){
+                classEstado = 'estado-activo';
+                textoEstado = 'Activo';
+            } else{
+                classEstado = 'estado-inactivo';
+                textoEstado = 'Inactivo';
+            }
             // Usamos nombres genéricos por si las columnas de la BD cambian
             fila.innerHTML = `
                 <td>${estudiante.id || estudiante.id_estudiante || '-'}</td>
@@ -23,6 +32,13 @@ document.addEventListener('DOMContentLoaded', async function() {
                 <td>${estudiante.apellido || '-'}</td>
                 <td>${estudiante.nombres || '-'}</td>
                 <td>${estudiante.email || '-'}</td>
+                <td>${new Date(estudiante.fecha_nacimiento).toLocaleDateString()}</td>
+                <td><span class="${classEstado}">${textoEstado}</td>
+                <td>
+                    <button class="btn-accion"><i class="bx bx-show"></i></button>
+                    <button class="btn-accion"><i class="bx bx-edit-alt"></i></button>
+                    <button class="btn-accion"><i class="bx bx-trash"></i></button>
+                </td>
             `;
             tabla.appendChild(fila);
         });
