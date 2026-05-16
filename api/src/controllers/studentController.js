@@ -6,7 +6,8 @@ const getStudents = async (req, res) => {
 
     try {
 
-        const students = await studentService.getAllStudents();
+        const buscar = req.query.buscar;
+        const students = await studentService.getAllStudents(buscar);
 
         const studentsDTO = students.map(studentDTO);
         res.status(200).json(studentsDTO);

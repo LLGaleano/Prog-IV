@@ -1,13 +1,19 @@
 const pool = require('../db/connection');
 
-const getAllStudents = async () => {
-
-    const result = await pool.query(`
-        SELECT *
-        FROM estudiantes
-        ORDER BY id_estudiante
-    `);
-
+const getAllStudents = async (busqueda = null) => {
+    let query = `SELECT * FROM estudiantes ORDER BY id_estudiante`;
+    let valores = [];
+    if(busqueda){
+        query = `
+            SELECT * FROM estudiantes 
+            WHERE apellido ILIKE $1 
+            OR nombres ILIKE $1
+            OR documento::text ILIKE $1
+            ORDER BY id_estudiante
+        `;
+        valores.push(`%${busqueda}%`);
+    }
+    const result = await pool.query(query, valores);
     return result.rows;
 };
 
