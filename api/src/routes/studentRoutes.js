@@ -4,10 +4,10 @@ const router = express.Router();
 
 const studentController = require('../controllers/studentController');
 
-//GET de estudiante
+//GET de estudiantes
 router.get('/', studentController.getStudents);
 
-//READ de estudiante
+//GET de estudiante
 router.get('/:id', studentController.searchStudent);
 
 //POST de estudiante
