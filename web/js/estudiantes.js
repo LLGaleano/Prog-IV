@@ -1,15 +1,18 @@
-const tabla = document.getElementById('tbody');
-const buscadorEstudiante = document.querySelector('.buscador');
+//Traemos el tbody para cargar los datos de los estudiantes
+const tabla = document.getElementById('tbody'); 
+//Recibimos los datos del usuario para hacer la busqueda
+const buscadorEstudiante = document.querySelector('.buscador'); 
     
 
 //Hice una funcion para cargar los datos para poder cargar cada busqueda que se haga
 const llenarTabla = (datos) =>{
     tabla.innerHTML = ''; 
-    // Llenamos la tabla con los datos
+    // Si no es un array, mostramos un error
     if(!Array.isArray(datos)){
         tabla.innerHTML = '<tr><td colspan="8" class="text-center text-danger">Error del servidor al buscar.</td></tr>';
         return;
     }
+    // Si el array está vacío, mostramos un mensaje de que no se encontraron resultados
     if(datos.length === 0){
         tabla.innerHTML = '<tr><td colspan="8" style="text-align: center; padding: 20px;">No se encontraron estudiantes con esa búsqueda.</td></tr>';
         return;
@@ -25,15 +28,14 @@ const llenarTabla = (datos) =>{
             classEstado = 'estado-inactivo';
             textoEstado = 'Inactivo';
         }
-        // Usamos nombres genéricos por si las columnas de la BD cambian
         fila.innerHTML = `
-                <td>${estudiante.id || estudiante.id_estudiante || '-'}</td>
-                <td>${estudiante.documento || estudiante.documento_estudiante || "-"}</td>
+                <td>${estudiante.id       || '-'}</td>
+                <td>${estudiante.documento|| "-"}</td>
                 <td>${estudiante.apellido || '-'}</td>
-                <td>${estudiante.nombres || '-'}</td>
-                <td>${estudiante.email || '-'}</td>
+                <td>${estudiante.nombres  || '-'}</td>
+                <td>${estudiante.email    || '-'}</td>
                 <td>${new Date(estudiante.fecha_nacimiento).toLocaleDateString()}</td>
-                <td><span class="${classEstado}">${textoEstado}</td>
+                <td><span class="${classEstado}">${textoEstado} </span></td>
                 <td>
                     <button class="btn-accion"><i class="bx bx-show"></i></button>
                     <button class="btn-accion"><i class="bx bx-edit-alt"></i></button>
@@ -44,7 +46,7 @@ const llenarTabla = (datos) =>{
         });
     }
 
-    //esto es lo que estaba antes para cargar los datos de base, usando la funcion de antes
+    //al cargar la pagina, traemos los datos de la api y los mostramos en la tabla
 document.addEventListener('DOMContentLoaded', async function() {
     if(!tabla) return;
     try{
@@ -57,7 +59,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     }
 })
 
-//aca esta el estudiante, mande un fetch
+//Agregamos un evento al buscador para que cada vez que se escriba algo, se haga una consulta a la api y se muestren los resultados
 buscadorEstudiante.addEventListener('keyup', async(evento) =>{
     const texto = evento.target.value;
     try{
