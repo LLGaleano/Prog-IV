@@ -174,6 +174,7 @@ if (formEstudiante) {
             apellido: document.getElementById('modal-apellido').value,
             email: document.getElementById('modal-email').value,
             fecha_nacimiento: document.getElementById('modal-fecha').value,
+            activo: 1
         };
         //Enviamos con el put a la API
         try {
