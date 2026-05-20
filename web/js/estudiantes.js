@@ -70,3 +70,15 @@ buscadorEstudiante.addEventListener('keyup', async(evento) =>{
         console.error("Error al buscar", error);
     }
 })
+
+//Programando la pantalla modal de editar estudiante
+const modal = document.getElementById('modal-estudiante');
+const btnCerrarModal = document.getElementById('btn-cerrar-modal');
+
+const abrirModal = () =>{
+    modal.showModal();
+}
+
+btnCerrarModal.addEventListener('click',() =>{
+    modal.close();
+})
