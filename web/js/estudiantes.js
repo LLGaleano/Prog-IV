@@ -37,9 +37,9 @@ const llenarTabla = (datos) =>{
                 <td>${new Date(estudiante.fecha_nacimiento).toLocaleDateString()}</td>
                 <td><span class="${classEstado}">${textoEstado} </span></td>
                 <td>
-                    <button class="btn-accion"><i class="bx bx-show"></i></button>
-                    <button class="btn-accion"><i class="bx bx-edit-alt"></i></button>
-                    <button class="btn-accion"><i class="bx bx-trash"></i></button>
+                    <button class="btn-accion btn-ver" data-id="${estudiante.id}"><i class="bx bx-show"></i></button>
+                    <button class="btn-accion btn-editar" data-id="${estudiante.id}"><i class="bx bx-edit-alt"></i></button>
+                    <button class="btn-accion btn-borrar data-id="${estudiante.id}""><i class="bx bx-trash"></i></button>
                 </td>
             `;
             tabla.appendChild(fila);
@@ -74,6 +74,7 @@ buscadorEstudiante.addEventListener('keyup', async(evento) =>{
 //Programando la pantalla modal de editar estudiante
 const modal = document.getElementById('modal-estudiante');
 const btnCerrarModal = document.getElementById('btn-cerrar-modal');
+const formEstudiante = document.getElementById('form-estudiante');
 
 const abrirModal = () =>{
     modal.showModal();
@@ -82,3 +83,4 @@ const abrirModal = () =>{
 btnCerrarModal.addEventListener('click',() =>{
     modal.close();
 })
+
