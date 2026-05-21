@@ -20,6 +20,7 @@ const llenarTabla = (datos) =>{
         tabla.innerHTML = '<tr><td colspan="8" style="text-align: center; padding: 20px;">No se encontraron estudiantes con esa búsqueda.</td></tr>';
         return;
     }
+    datos = datos.filter(estudiante => estudiante.activo === 1); //Filtro para sacar los estudiantes inactivos 
     //llenamos la tabla con los datos
     datos.forEach(estudiante => {
         const fila = document.createElement('tr');
@@ -60,6 +61,7 @@ document.addEventListener('DOMContentLoaded', async function() {
         console.log("¡Datos de estudiantes cargados exitosamente!");
     } catch(error){
         console.error("Error al traer los datos",error);
+        tabla.innerHTML = '<tr><td colspan="8" class="text-center text-danger">Error al cargar los datos de estudiantes.</td></tr>';
     }
 })
 
@@ -84,7 +86,7 @@ tabla.addEventListener('click',async (evento) => {
     if (botonEliminar) {
         // Sacamos el ID del estudiante del dataset del botón
         const idEstudiante = botonEliminar.dataset.id;
-        const confirmacion = confirm('estas seguro de dar de baja?');
+        const confirmacion = confirm('¿Está seguro de que desea dar de baja a este estudiante del sistema?');
         if(!confirmacion) return;
         // fetch DELETE
         try {
