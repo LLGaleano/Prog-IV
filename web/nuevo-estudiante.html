@@ -3,39 +3,86 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>nuevo-estudiante</title>
+    <title>Registrar Nuevo Estudiante</title>
     <script src="js/nuevo-estudiante.js" defer></script>
+    <link rel="stylesheet" href="css/global.css"/>
+    <link rel="stylesheet" href="css/nuevo-estudiante.css"/>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 </head>
 <body>
+    <header class="header-principal"> 
+        <div class="logo-img hd">
+            <img src="img/Fcad-Logo.png" alt="logo de la Facultad">
+        </div>
+        <div class="titulo hd">
+            <h1>Cursos</h1>
+        </div>
+        <div class="icono-perfil hd">
+            <div class="icono-perfil2">
+                <i class="bx bx-user"></i>
+                <span>Usuario123</span>
+            </div>
+        </div>
+    </header>
+    <div class="contenedor-principal">
+        <aside class="contenedor-nav">
+            <nav>
+                <ul class="lista-principal">
+                    <li><a class="link-nav" href="index.html">Inicio</a></li>
+                    <li><a class="link-nav" href="cursos.html">Cursos</a></li>
+                    <li><a class="link-nav" href="estudiantes.html">Estudiantes</a></li>
+                    <li><a class="link-nav" href="inscriptos.html">Inscriptos</a></li>
+                </ul>
+            </nav>
+        </aside>
 
-    <div>
-        <h2>Registrar Nuevo Alumno</h2>
-        
-        <form id="formNuevoAlumno">
-            <div>
-                <label>Documento:</label>
-                <input type="text" id="inputDocumento" required>
-            </div>
-            <div>
-                <label>Nombres:</label>
-                <input type="text" id="inputNombres" required>
-            </div>
-            <div>
-                <label>Apellido:</label>
-                <input type="text" id="inputApellido" required>
-            </div>
-            <div>
-                <label>Email:</label>
-                <input type="email" id="inputEmail" required>
-            </div>
-            <div>
-                <label>Fecha de Nacimiento:</label>
-                <input type="date" id="inputFechaNac" required>
-            </div>
 
-            <button type="submit">Guardar Estudiante</button>
-            <a href="estudiantes.html">Cancelar y Volver</a>
-        </form>
+        <main>
+            <div class="contenedor-formulario">
+                <div class="header-form">
+                    <h2>Registrar Nuevo Alumno</h2>
+                    <p>Complete los campos para registrar un estudiante.</p>
+                </div>
+                <form id="formNuevoAlumno" class="formulario">
+                    <div class="fila-campos">
+                        <div class="campo-grupo">
+                            <label for="inputDocumento">Documento</label>
+                            <input type="text" id="inputDocumento" required>
+                        </div>
+                    </div>
+                    <div class="fila-campos">
+                        <div class="campo-grupo">
+                            <label for="inputNombres">Nombres</label>
+                            <input type="text" id="inputNombres" required>
+                        </div>
+                    </div>
+                    <div class="fila-campos">
+                        <div class="campo-grupo">
+                            <label for="inputApellido">Apellido</label>
+                            <input type="text" id="inputApellido" required>
+                        </div>
+                    </div>
+                    <div class="fila-campos">
+                        <div class="campo-grupo">
+                            <label for="inputEmail">Email</label>
+                            <input type="email" id="inputEmail" required>
+                        </div>
+                    </div>
+                    <div class="fila-campos">
+                        <div class="campo-grupo">
+                            <label for="inputFechaNac">Fecha de Nacimiento:</label>
+                            <input type="date" id="inputFechaNac" required>
+                        </div>
+                    </div>
+                    <div class="acciones-formulario">
+                        <a href="estudiantes.html" class="btn-cancelar">Cancelar y Volver</a>
+                        <button type="submit" class="btn-guardar">
+                            <i class='bx bx-save'></i>Guardar Estudiante
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </main>
     </div>
 </body>
 

@@ -158,4 +158,8 @@
     cursor: pointer;
 }
 
+.btn-guardar-modal:hover {
+    background-color: #218838;
+}
+
 .oculto {display: none !important;}
