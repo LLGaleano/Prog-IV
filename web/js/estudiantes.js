@@ -1,175 +1,167 @@
-/// ELEMENTOS DEL DOM (Los dejamos acá arriba para no repetirlo en cada función)
+// ELEMENTOS DEL DOM
 const tabla = document.getElementById('tbody'); 
 const buscadorEstudiante = document.querySelector('.buscador'); 
 const modal = document.getElementById('modal-estudiante'); 
 const formEstudiante = document.getElementById('form-estudiante');
 const btnCerrarModal = document.getElementById('btn-cerrar-modal');
 
-
-
-//Función para llenar la tabla con los datos recibidos de la API
-const llenarTabla = (datos) =>{
+// Función para llenar la tabla con los datos del DTO (camelCase)
+const llenarTabla = (objetoRespuesta) => {
     tabla.innerHTML = ''; 
-    // Si no es un array, mostramos un error
-    if(!Array.isArray(datos)){
-        tabla.innerHTML = '<tr><td colspan="8" class="text-center text-danger">Error del servidor al buscar.</td></tr>';
+    
+    // Extraemos el array del campo 'data' según la estructura unificada de la API
+    const listaEstudiantes = objetoRespuesta.data;
+
+    if (!Array.isArray(listaEstudiantes)) {
+        tabla.innerHTML = '<tr><td colspan="8" class="text-center text-danger">Error de consistencia en el formato de datos.</td></tr>';
         return;
     }
-    // Si el array está vacío, mostramos un mensaje de que no se encontraron resultados
-    if(datos.length === 0){
-        tabla.innerHTML = '<tr><td colspan="8" style="text-align: center; padding: 20px;">No se encontraron estudiantes con esa búsqueda.</td></tr>';
+    
+    if (listaEstudiantes.length === 0) {
+        tabla.innerHTML = '<tr><td colspan="8" style="text-align: center; padding: 20px;">No se encontraron estudiantes activos con esa búsqueda.</td></tr>';
         return;
     }
-    datos = datos.filter(estudiante => estudiante.activo === 1); //Filtro para sacar los estudiantes inactivos 
-    //llenamos la tabla con los datos
-    datos.forEach(estudiante => {
+
+    listaEstudiantes.forEach(estudiante => {
         const fila = document.createElement('tr');
-        let classEstado = '';
-        let textoEstado = '';
-        if( estudiante.activo===1){
-            classEstado = 'estado-activo';
-            textoEstado = 'Activo';
-        } else{
-            classEstado = 'estado-inactivo';
-            textoEstado = 'Inactivo';
+        
+        // Mapeamos el color y texto usando la propiedad 'activo' del DTO (1 o 0)
+        const classEstado = estudiante.activo === 1 ? 'estado-activo' : 'estado-inactivo';
+        const textoEstado = estudiante.activo === 1 ? 'Activo' : 'Inactivo';
+
+        // Adaptamos el casteo de la fecha de nacimiento eliminando descalces de huso horario local
+        let fechaFormateada = '-';
+        if (estudiante.fechaNacimiento) {
+            const [anio, mes, dia] = estudiante.fechaNacimiento.split('-');
+            fechaFormateada = `${dia}/${mes}/${anio}`;
         }
+
+        // IMPORTANTE: Leemos las claves mapeadas por el DTO en camelCase (idEstudiante)
         fila.innerHTML = `
-                <td>${estudiante.id       || '-'}</td>
-                <td>${estudiante.documento|| "-"}</td>
-                <td>${estudiante.apellido || '-'}</td>
-                <td>${estudiante.nombres  || '-'}</td>
-                <td>${estudiante.email    || '-'}</td>
-                <td>${new Date(estudiante.fecha_nacimiento).toLocaleDateString()}</td>
-                <td><span class="${classEstado}">${textoEstado} </span></td>
-                <td>
-                    <button class="btn-accion btn-ver" data-id="${estudiante.id}"><i class="bx bx-show"></i></button>
-                    <button class="btn-accion btn-editar" data-id="${estudiante.id}"><i class="bx bx-edit-alt"></i></button>
-                    <button class="btn-accion btn-borrar" data-id="${estudiante.id} "><i class="bx bx-trash"></i></button>
-                </td>
-            `;
-            tabla.appendChild(fila);
-        });
-    }
+            <td>${estudiante.idEstudiante || '-'}</td>
+            <td>${estudiante.documento || "-"}</td>
+            <td>${estudiante.apellido || '-'}</td>
+            <td>${estudiante.nombres || '-'}</td>
+            <td>${estudiante.email || '-'}</td>
+            <td>${fechaFormateada}</td>
+            <td><span class="${classEstado}">${textoEstado}</span></td>
+            <td>
+                <button class="btn-accion btn-ver" data-id="${estudiante.idEstudiante}"><i class="bx bx-show"></i></button>
+                <button class="btn-accion btn-editar" data-id="${estudiante.idEstudiante}"><i class="bx bx-edit-alt"></i></button>
+                <button class="btn-accion btn-borrar" data-id="${estudiante.idEstudiante}"><i class="bx bx-trash"></i></button>
+            </td>
+        `;
+        tabla.appendChild(fila);
+    });
+};
 
-    //al cargar la pagina, traemos los datos de la api y los mostramos en la tabla
+// Carga inicial al inicializar el árbol DOM
 document.addEventListener('DOMContentLoaded', async function() {
-    if(!tabla) return;
-    try{
+    if (!tabla) return;
+    try {
         const respuesta = await fetch('http://localhost:3000/students');
-        const datos = await respuesta.json();
-        llenarTabla(datos);
+        const objetoRespuesta = await respuesta.json();
+        llenarTabla(objetoRespuesta);
         console.log("¡Datos de estudiantes cargados exitosamente!");
-    } catch(error){
-        console.error("Error al traer los datos",error);
-        tabla.innerHTML = '<tr><td colspan="8" class="text-center text-danger">Error al cargar los datos de estudiantes.</td></tr>';
+    } catch (error) {
+        console.error("Error al traer los datos", error);
+        tabla.innerHTML = '<tr><td colspan="8" class="text-center text-danger">Error de conexión al cargar los datos de estudiantes.</td></tr>';
     }
-})
+});
 
-//Agregamos un evento al buscador para que cada vez que se escriba algo, se haga una consulta a la api y se muestren los resultados
-buscadorEstudiante.addEventListener('keyup', async(evento) =>{
-    const texto = evento.target.value;
-    try{
-        const respuesta = await fetch(`http://localhost:3000/students?buscar=${texto}`);
-        const datos = await respuesta.json();
-        llenarTabla(datos);
-    } catch(error){
-        console.error("Error al buscar", error);
+// Evento de escucha en el buscador conectado al endpoint dinámico
+buscadorEstudiante.addEventListener('keyup', async (evento) => {
+    const texto = evento.target.value.trim();
+    try {
+        // Ejecutamos la búsqueda simultánea por Apellido y Documento mediante los Query Params de la cátedra
+        const respuesta = await fetch(`http://localhost:3000/students?apellido=${texto}&documento=${texto}`);
+        const objetoRespuesta = await respuesta.json();
+        llenarTabla(objetoRespuesta);
+    } catch (error) {
+        console.error("Error al buscar:", error);
     }
-})
+});
 
-
-//Funcion para editar o eliminar un estudiante.
-tabla.addEventListener('click',async (evento) => {
+// Delegación de eventos en la tabla para Acciones (BREAD)
+tabla.addEventListener('click', async (evento) => {
     const botonEliminar = evento.target.closest('.btn-borrar');
     const botonEditar = evento.target.closest('.btn-editar');
-    const botonVer = evento.target.closest('.btn-ver')
+    const botonVer = evento.target.closest('.btn-ver');
+
     if (botonEliminar) {
-        // Sacamos el ID del estudiante del dataset del botón
         const idEstudiante = botonEliminar.dataset.id;
-        const confirmacion = confirm('¿Está seguro de que desea dar de baja a este estudiante del sistema?');
-        if(!confirmacion) return;
-        // fetch DELETE
+        const confirmacion = confirm('¿Está seguro de que desea dar de baja de forma lógica a este estudiante?');
+        if (!confirmacion) return;
+
         try {
-                const respuesta = await fetch(`http://localhost:3000/students/${idEstudiante}`, {
-                    method: 'DELETE'
-                });
-                
-                if (respuesta.ok) {
-                    alert('Estudiante dado de baja correctamente.');
-                    // Disparamos una nueva consulta para que la tabla se recargue sola
-                    const res = await fetch('http://localhost:3000/students');
-                    const datosActualizados = await res.json();
-                    llenarTabla(datosActualizados);
-                } else {
-                    alert('Error al intentar dar de baja al estudiante en la base de datos.');
-                }
-            } catch (error) {
-                console.error("Error en el DELETE:", error);
-                alert("Fallo de conexión con el servidor.");
-            }
-        
-        }
-        
-    // fetch PUT para editar/ver un estudiante
-    const botonPresionado = botonEditar || botonVer; //tocando cualquiera va a entrar
-    if (botonPresionado) {
-        const idEstudiante = botonPresionado.dataset.id;
-        console.log("¡Clic en Editar! El ID del estudiante es:", idEstudiante);
-        
-        // Editar: Primero hacemos un GET para traer los datos actuales de ese estudiante y llenar el formulario del modal
-        try {
-        const respuesta = await fetch(`http://localhost:3000/students/${idEstudiante}`,)
-        if (respuesta.ok) {
-            const estudiante = await respuesta.json();
-                document.getElementById('modal-id').value          = estudiante.id ;
-                document.getElementById('modal-dni').value   = estudiante.documento ;
-                document.getElementById('modal-nombres').value     = estudiante.nombres;
-                document.getElementById('modal-apellido').value    = estudiante.apellido;
-                document.getElementById('modal-email').value       = estudiante.email;
-                if (estudiante.fecha_nacimiento) {
-                    //Devuelve una fecha como un valor de cadena en formato ISO. "2004-02-15T00:00:00.000Z"
-                    const fechaLimpia = new Date(estudiante.fecha_nacimiento).toISOString().split('T')[0];
-                    document.getElementById('modal-fecha').value = fechaLimpia;
-                }
-                //aca se ve si se bloque para editar si apreto en ver
-                const tituloModal = document.getElementById('modal-titulo');
-                const btnGuardar = document.getElementById('btn-guardar-modal');
-                const inputs = formEstudiante.querySelectorAll('input');
-                if(botonVer){
-                    tituloModal.innerText = "Detalles del Estudiante";
-                    btnGuardar.classList.add('oculto'); //Se esconde el boton, en css estudiantes esta la accion
-                    inputs.forEach(
-                        input => input.disabled = true
-                    ); //bloquea para q no se pueda escribir todos los campos
-                }else{
-                    //Si toca edicion
-                    tituloModal.innerText = "Editar Estudiante";
-                    btnGuardar.classList.remove('oculto');
-                    inputs.forEach(
-                        input => input.disabled = false
-                    );
-                }
-                modal.showModal();
-                } else {
-                alert("No se pudieron cargar los datos de este estudiante.");
-            }
+            const respuesta = await fetch(`http://localhost:3000/students/${idEstudiante}`, {
+                method: 'DELETE'
+            });
             
+            if (respuesta.ok) {
+                alert('Estudiante dado de baja correctamente (Soft Delete aplicado).');
+                const res = await fetch('http://localhost:3000/students');
+                const objetoRespuesta = await res.json();
+                llenarTabla(objetoRespuesta);
+            } else {
+                alert('Error al intentar dar de baja al estudiante.');
+            }
         } catch (error) {
-            console.error("Error al traer los datos:", error);
+            console.error("Error en el DELETE:", error);
             alert("Fallo de conexión con el servidor.");
         }
     }
-    });
+        
+    const botonPresionado = botonEditar || botonVer;
+    if (botonPresionado) {
+        const idEstudiante = botonPresionado.dataset.id;
+        
+        try {
+            const respuesta = await fetch(`http://localhost:3000/students/${idEstudiante}`);
+            if (respuesta.ok) {
+                const estudiante = await respuesta.json();
+                
+                // Cargamos los elementos de la modal usando las claves de respuesta en camelCase
+                document.getElementById('modal-id').value = estudiante.idEstudiante;
+                document.getElementById('modal-dni').value = estudiante.documento;
+                document.getElementById('modal-nombres').value = estudiante.nombres;
+                document.getElementById('modal-apellido').value = estudiante.apellido;
+                document.getElementById('modal-email').value = estudiante.email;
+                
+                if (estudiante.fechaNacimiento) {
+                    document.getElementById('modal-fecha').value = estudiante.fechaNacimiento;
+                }
+                
+                const tituloModal = document.getElementById('modal-titulo');
+                const btnGuardar = document.getElementById('btn-guardar-modal');
+                const inputs = formEstudiante.querySelectorAll('input');
+                
+                if (botonVer) {
+                    tituloModal.innerText = "Detalles del Estudiante";
+                    btnGuardar.classList.add('oculto');
+                    inputs.forEach(input => input.disabled = true);
+                } else {
+                    tituloModal.innerText = "Editar Estudiante";
+                    btnGuardar.classList.remove('oculto');
+                    inputs.forEach(input => input.disabled = false);
+                }
+                modal.showModal();
+            } else {
+                alert("No se pudieron recuperar los detalles del registro.");
+            }
+        } catch (error) {
+            console.error("Error al traer detalles:", error);
+            alert("Fallo de conexión con el servidor.");
+        }
+    }
+});
     
-    // Agregamos un evento al formulario para que al enviar los cambios, se haga un fetch PUT a la API
-
+// Actualización vía PUT al enviar los cambios desde el modal
 if (formEstudiante) {
     formEstudiante.addEventListener('submit', async (evento) => {
-        // Frenamos la recarga de la página
         evento.preventDefault(); 
         const idEstudiante = document.getElementById('modal-id').value;
 
-        // Armamos el JSON con los valores que el usuario acaba de ingresar
         const estudianteActualizado = {
             documento: document.getElementById('modal-dni').value,
             nombres: document.getElementById('modal-nombres').value,
@@ -178,7 +170,7 @@ if (formEstudiante) {
             fecha_nacimiento: document.getElementById('modal-fecha').value,
             activo: 1
         };
-        //Enviamos con el put a la API
+
         try {
             const respuesta = await fetch(`http://localhost:3000/students/${idEstudiante}`, {
                 method: 'PUT',
@@ -187,22 +179,23 @@ if (formEstudiante) {
             });
 
             if (respuesta.ok) {
-                alert('¡Estudiante actualizado con éxito!');
+                alert('¡Estudiante modificado exitosamente!');
                 modal.close(); 
                 const res = await fetch('http://localhost:3000/students');
-                const datosActualizados = await res.json();
-                llenarTabla(datosActualizados);
+                const objetoRespuesta = await res.json();
+                llenarTabla(objetoRespuesta);
             } else {
-                alert('Hubo un problema al actualizar los datos en el servidor. ');
+                const errorBackend = await respuesta.json();
+                // Mostramos el mensaje detallado que configuramos en los controles de unicidad
+                alert('Error al actualizar: ' + (errorBackend.error || 'Verifique los campos.'));
             }
         } catch (error) {
             console.error("Error en el PUT:", error);
-            alert("Error de conexión al intentar guardar los cambios.");
+            alert("Error de red al intentar guardar las modificaciones.");
         }
     });
 }
 
-// Evento para el boton cancelar
 if (btnCerrarModal) {
     btnCerrarModal.addEventListener('click', () => {
         if (modal) modal.close();
