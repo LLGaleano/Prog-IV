@@ -1,225 +1,149 @@
-const studentService = require('../services/studentService');
-const { studentDTO } = require('../dtos/studentDTO');
+const { validationResult } = require('express-validator'); // Control de sintaxis
+const studentService = require('../services/studentService'); // Capa de acceso/negocio 
+const { studentDTO } = require('../dtos/studentDTO'); 
 
+// GET ALL
 const getStudents = async (req, res) => {
-
     try {
-
-        const {
-            apellido,
-            documento,
-            page,
-            limit,
-            order,
-            asc
-        } = req.query;
-
-        const filter = {};
-
-        if (apellido) {
-            filter.apellido = apellido;
-        }
-
-        if (documento) {
-            filter.documento = documento;
-        }
-
-        const pageNumber = parseInt(page) || 1;
-        const pageSize = parseInt(limit) || 20;
-
-        const offset = (pageNumber - 1) * pageSize;
-
-        const orderBy = order || 'id_estudiante';
-        const orderDirection = asc || 'ASC';
-
-        const validOrderFields = [
-            'id_estudiante',
-            'apellido',
-            'documento',
-            'email'
-        ];
-
-        const finalOrder = validOrderFields.includes(orderBy)
-            ? orderBy
-            : 'id_estudiante';
-
-        const finalDirection =
-            orderDirection.toUpperCase() === 'DESC'
-                ? 'DESC'
-                : 'ASC';
+        // Leemos la propiedad mapeada sin interferencias de Express
+        const searchFilter = req.studentFilter || {}; 
+        const limit = Number(req.limit) || 20;
+        const offset = Number(req.offset) || 0;
+        const orderField = req.orderField || 'id_estudiante';
+        const orderDirection = req.orderDirection || 'ASC';
 
         const result = await studentService.getAllStudents(
-            filter,
-            pageSize,
+            searchFilter,
+            limit,
             offset,
-            finalOrder,
-            finalDirection
+            orderField,
+            orderDirection
         );
 
         const studentsDTO = result.students.map(studentDTO);
-
-        const totalPages = Math.ceil(
-            result.total / pageSize
-        );
+        
+        const totalRows = Number(result.total) || 0;
+        const totalPages = Math.ceil(totalRows / limit) || 1;
+        const currentPage = Math.floor(offset / limit) + 1;
 
         res.status(200).json({
             data: studentsDTO,
-            page: pageNumber,
-            limit: pageSize,
-            total: result.total,
-            totalPages
+            page: currentPage,
+            limit: limit,
+            total: totalRows,
+            totalPages: totalPages
         });
-
     } catch (error) {
-
-        console.log(error);
-
-        res.status(500).json({
-            error: 'No hay estudiantes'
-        });
-
+        console.error(error);
+        res.status(500).json({ error: 'Error interno al recuperar la colección de estudiantes.' });
     }
-
 };
 
+// GET by id
 const searchStudent = async (req, res) => {
-
     try {
-        const  id  = req.params.id;
+        const { id } = req.params;
         const student = await studentService.searchStudentID(parseInt(id));
 
+        if (!student) {
+            return res.status(404).json({ error: 'Estudiante no encontrado.' });
+        }
+
         res.status(200).json(studentDTO(student));
-
-    } catch (error) { 
-
-        console.log(error);
-
-        res.status(500).json({
-            error: 'No se encontro el estudiante'
-        });
-
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Error interno del servidor al buscar el estudiante.' });
     }
 };
 
+// POST de estudiante
 const createStudent = async (req, res) => {
     try {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
 
         const studentData = req.body;
-        
-        /*const validationError =
-        val.validateRequiredFields(studentData) ||
-        val.validateEmail(studentData.email) ||
-        val.validateDocumento(studentData.documento) ||
-        val.validateFechaNac(studentData.fecha_nacimiento);
-
-        if (validationError) {
-            return res.status(400).json({
-                error: validationError
-            });
-        }*/
 
         const existingDocumento = await studentService.searchStudentByDocumento(studentData.documento);
-
         if (existingDocumento) {
-            return res.status(409).json({
-                error: 'Ya hay un alumno con ese documento'
-           });
+            return res.status(409).json({ error: 'Ya existe un alumno registrado con ese documento.' });
         }
         
         const existingEmail = await studentService.searchStudentByEmail(studentData.email);
-
         if (existingEmail) {
-            return res.status(409).json({
-                error: 'Ya hay un alumno con ese email'
-           });
+            return res.status(409).json({ error: 'Ya existe un alumno registrado con ese email.' });
         }
+
+        // Auditoría dinámica basada en el Token JWT
+        studentData.id_usuario_modificacion = req.user ? req.user.id_usuario : 1; 
 
         const newStudent = await studentService.createStudent(studentData);
-
-        res.status(201).json(studentDTO(newStudent));
-
+        res.status(201).json(studentDTO(newStudent)); 
     } catch (error) {
-
-        console.log(error);
-
-        res.status(500).json({
-            error: 'Error creando estudiante'
-        });
-
+        console.error(error);
+        res.status(500).json({ error: 'Error interno del servidor al crear el estudiante.' });
     }
-
 };
 
+// PUT de estudiante
 const modifyStudent = async (req, res) => {
-    
     try {
-        
-        const id = req.params.id;
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
+
+        const { id } = req.params;
         const student = await studentService.searchStudentID(id);
 
         if (!student) {
-            return res.status(404).json({
-                error: 'Estudiante no encontrado'
-            });
+            return res.status(404).json({ error: 'Estudiante no encontrado.' });
         }
 
         const studentData = req.body;
 
         const existingDocumento = await studentService.searchStudentByDocumento(studentData.documento);
-
-        //Si el documento ya existe y no pertenece al estudiante que estamos modificando, tiramos error
         if (existingDocumento && existingDocumento.id_estudiante !== parseInt(id)) {
-            return res.status(409).json({
-                error: 'Ya hay un alumno con ese documento'
-        });
+            return res.status(409).json({ error: 'El documento ingresado ya pertenece a otro estudiante.' });
         }
         
         const existingEmail = await studentService.searchStudentByEmail(studentData.email);
-
-        //Si el email ya existe y no pertenece al estudiante que estamos modificando, tiramos error
         if (existingEmail && existingEmail.id_estudiante !== parseInt(id)) {
-            return res.status(409).json({
-                error: 'Ya hay un alumno con ese email'
-        });
+            return res.status(409).json({ error: 'El email ingresado ya pertenece a otro estudiante.' });
         }
 
-        
+        studentData.id_usuario_modificacion = req.user ? req.user.id_usuario : 1;
+
         const modifiedStudent = await studentService.modifyStudent(id, studentData);
         res.status(200).json(studentDTO(modifiedStudent));
-
     } catch (error) {
-        console.log(error);
-        res.status(500).json({
-            error: 'Error modificando estudiante'
-        });
+        console.error(error);
+        res.status(500).json({ error: 'Error interno del servidor al modificar el estudiante.' });
     }
-
 };
 
+// Soft Delete de estudiante cambiando 'activo' a 0.
+ 
 const deleteStudent = async (req, res) => {
-
     try {
-
-        const id = req.params.id;
+        const { id } = req.params;
         const student = await studentService.searchStudentID(id);
 
         if (!student) {
-            return res.status(404).json({
-                error: 'Estudiante no encontrado'
-            });
+            return res.status(404).json({ error: 'Estudiante no encontrado.' });
         }
 
-        const deletedStudent = await studentService.deleteStudent(id);
-        res.status(200).json(studentDTO(deletedStudent));
-        
-    } catch (error) {
-        console.log(error);
-        res.status(500).json({
-            error: 'Error dando de baja estudiante'
-        });
-    }
+        const userIdModif = req.user ? req.user.id_usuario : 1;
 
-}
+        const deletedStudent = await studentService.deleteStudent(id, userIdModif);
+        res.status(200).json(studentDTO(deletedStudent));
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Error interno del servidor al dar de baja al estudiante.' });
+    }
+};
 
 module.exports = {
     getStudents,

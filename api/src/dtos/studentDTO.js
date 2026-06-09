@@ -1,4 +1,5 @@
 const studentDTO = (student) => {
+    if (!student) return null;
 
     return {
         idEstudiante: student.id_estudiante,
@@ -11,7 +12,6 @@ const studentDTO = (student) => {
         idUsuarioModificacion: student.id_usuario_modificacion,
         fechaHoraModificacion: student.fecha_hora_modificacion
     };
-
 };
 
 module.exports = {
