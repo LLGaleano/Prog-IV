@@ -1,16 +1,74 @@
 const studentService = require('../services/studentService');
-const val = require('../validations/studentValidations');
 const { studentDTO } = require('../dtos/studentDTO');
 
 const getStudents = async (req, res) => {
 
     try {
 
-        const buscar = req.query.buscar;
-        const students = await studentService.getAllStudents(buscar);
+        const {
+            apellido,
+            documento,
+            page,
+            limit,
+            order,
+            asc
+        } = req.query;
 
-        const studentsDTO = students.map(studentDTO);
-        res.status(200).json(studentsDTO);
+        const filter = {};
+
+        if (apellido) {
+            filter.apellido = apellido;
+        }
+
+        if (documento) {
+            filter.documento = documento;
+        }
+
+        const pageNumber = parseInt(page) || 1;
+        const pageSize = parseInt(limit) || 20;
+
+        const offset = (pageNumber - 1) * pageSize;
+
+        const orderBy = order || 'id_estudiante';
+        const orderDirection = asc || 'ASC';
+
+        const validOrderFields = [
+            'id_estudiante',
+            'apellido',
+            'documento',
+            'email'
+        ];
+
+        const finalOrder = validOrderFields.includes(orderBy)
+            ? orderBy
+            : 'id_estudiante';
+
+        const finalDirection =
+            orderDirection.toUpperCase() === 'DESC'
+                ? 'DESC'
+                : 'ASC';
+
+        const result = await studentService.getAllStudents(
+            filter,
+            pageSize,
+            offset,
+            finalOrder,
+            finalDirection
+        );
+
+        const studentsDTO = result.students.map(studentDTO);
+
+        const totalPages = Math.ceil(
+            result.total / pageSize
+        );
+
+        res.status(200).json({
+            data: studentsDTO,
+            page: pageNumber,
+            limit: pageSize,
+            total: result.total,
+            totalPages
+        });
 
     } catch (error) {
 
@@ -48,7 +106,7 @@ const createStudent = async (req, res) => {
 
         const studentData = req.body;
         
-        const validationError =
+        /*const validationError =
         val.validateRequiredFields(studentData) ||
         val.validateEmail(studentData.email) ||
         val.validateDocumento(studentData.documento) ||
@@ -58,7 +116,7 @@ const createStudent = async (req, res) => {
             return res.status(400).json({
                 error: validationError
             });
-        }
+        }*/
 
         const existingDocumento = await studentService.searchStudentByDocumento(studentData.documento);
 
@@ -107,19 +165,6 @@ const modifyStudent = async (req, res) => {
 
         const studentData = req.body;
 
-        const validationError =
-        val.validateRequiredFields(studentData) ||
-        val.validateEmail(studentData.email) ||
-        val.validateDocumento(studentData.documento) ||
-        val.validateFechaNac(studentData.fecha_nacimiento);
-
-        if (validationError) {
-            return res.status(400).json({
-                error: validationError
-            });
-        }
-
-        
         const existingDocumento = await studentService.searchStudentByDocumento(studentData.documento);
 
         //Si el documento ya existe y no pertenece al estudiante que estamos modificando, tiramos error

@@ -4,6 +4,11 @@ const router = express.Router();
 
 const studentController = require('../controllers/studentController');
 
+const {
+    createStudentValidation,
+    updateStudentValidation
+} = require('../validations/studentValidations');
+
 //GET de estudiantes
 router.get('/', studentController.getStudents);
 
@@ -11,10 +16,16 @@ router.get('/', studentController.getStudents);
 router.get('/:id', studentController.searchStudent);
 
 //POST de estudiante
-router.post('/', studentController.createStudent);
+router.post(
+    '/',
+    createStudentValidation,
+    studentController.createStudent
+);
 
 //PUT de estudiante
-router.put('/:id', studentController.modifyStudent);
+router.put(
+    '/:id', updateStudentValidation, studentController.modifyStudent
+);
 
 //SOFT DELETE de estudiante
 router.delete('/:id', studentController.deleteStudent);

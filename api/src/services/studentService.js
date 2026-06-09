@@ -1,20 +1,66 @@
 const pool = require('../db/connection');
 
-const getAllStudents = async (busqueda = null) => {
-    let query = `SELECT * FROM estudiantes ORDER BY id_estudiante`;
-    let valores = [];
-    if(busqueda){
-        query = `
-            SELECT * FROM estudiantes 
-            WHERE apellido ILIKE $1 
-            OR nombres ILIKE $1
-            OR documento::text ILIKE $1
-            ORDER BY id_estudiante
-        `;
-        valores.push(`%${busqueda}%`);
+const getAllStudents = async (
+    filter = {},
+    limit = 20, //valores por defecto
+    offset = 0,
+    order = 'id_estudiante',
+    asc = 'ASC'
+) => {
+    //Filtro solo estudiantes activos
+    let whereClause = `
+        WHERE activo = 1
+    `;
+
+    const values = [];
+    //Armo la query sql
+    if (filter.apellido) {
+        values.push(`%${filter.apellido}%`);
+        whereClause += ` AND apellido ILIKE $${values.length}`;
     }
-    const result = await pool.query(query, valores);
-    return result.rows;
+
+    if (filter.documento) {
+        values.push(`%${filter.documento}%`);
+        whereClause += ` AND documento::text ILIKE $${values.length}`;
+    }
+
+    const countQuery = `
+        SELECT COUNT(*) AS total
+        FROM estudiantes
+        ${whereClause}
+    `;
+
+    const countResult = await pool.query(
+        countQuery,
+        values
+    );
+
+    const total = parseInt(countResult.rows[0].total);
+
+    let query = `
+        SELECT *
+        FROM estudiantes
+        ${whereClause}
+        ORDER BY ${order} ${asc}
+    `;
+
+    const queryValues = [...values];
+
+    queryValues.push(limit);
+    query += ` LIMIT $${queryValues.length}`;
+
+    queryValues.push(offset);
+    query += ` OFFSET $${queryValues.length}`;
+
+    const result = await pool.query(
+        query,
+        queryValues
+    );
+
+    return {
+        students: result.rows,
+        total
+    };
 };
 
 const searchStudentID = async (id) => {
