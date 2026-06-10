@@ -5,12 +5,15 @@ const { studentDTO } = require('../dtos/studentDTO');
 // GET ALL
 const getStudents = async (req, res) => {
     try {
-        // Leemos la propiedad mapeada sin interferencias de Express
         const searchFilter = req.studentFilter || {}; 
-        const limit = Number(req.limit) || 20;
-        const offset = Number(req.offset) || 0;
-        const orderField = req.orderField || 'id_estudiante';
-        const orderDirection = req.orderDirection || 'ASC';
+        
+        const limit = parseInt(req.query.limit) || 20;
+        const page = parseInt(req.query.page) || 1;
+        
+        const offset = (page - 1) * limit;
+
+        const orderField = req.query.orderField || 'id_estudiante';
+        const orderDirection = req.query.orderDirection || 'ASC';
 
         const result = await studentService.getAllStudents(
             searchFilter,
@@ -24,11 +27,10 @@ const getStudents = async (req, res) => {
         
         const totalRows = Number(result.total) || 0;
         const totalPages = Math.ceil(totalRows / limit) || 1;
-        const currentPage = Math.floor(offset / limit) + 1;
 
         res.status(200).json({
             data: studentsDTO,
-            page: currentPage,
+            page: page, // Devolvemos la página actual real
             limit: limit,
             total: totalRows,
             totalPages: totalPages

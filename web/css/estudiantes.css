@@ -10,18 +10,19 @@
     margin: 0;
 }
 
-.btn-agregar{
-    background-color: #28a745;
-    color:white;
-    border: none;
-    border-radius: 5px;
+.btn-agregar {
+    text-decoration: none; /* ¡Esta propiedad hace la magia y saca el subrayado! */
+    background-color: #009719; /* O el color que le hayan puesto */
+    color: white;
     padding: 10px 20px;
-    cursor: pointer;
+    border-radius: 6px;
     font-weight: bold;
+    display: inline-block; /* Ayuda a que el padding y los márgenes se respeten bien en un enlace */
+    transition: background 0.2s ease;
 }
 
-.btn-agregar:hover{
-    background-color: #218838;
+.btn-agregar:hover {
+    background-color: #002244; /* Un tono más oscuro para el efecto interactivo */
 }
 
 .herramienta{
@@ -35,7 +36,6 @@
     border: 1px solid #ccc;
     border-radius: 5px;
 }
-
 .contenedor-tabla{
     background: white;
     border-radius: 8px;
@@ -65,7 +65,7 @@
     background-color: #f8f9fa;
 }
 
-.btn-accion{
+/*.btn-accion{
     background: none;
     border: none;
     cursor: pointer;
@@ -75,7 +75,7 @@
 
 .btn-accion:hover{
     background: #eee;
-}
+}*/
 
 .estado-activo{
     background-color: #e8f5e9;
@@ -95,31 +95,59 @@
     font-weight: bold;
 }
 
-
 .modal-principal{
     width: 100%;
     max-width: 450px;
     background: white;
     padding: 0;
     border: none;
-    border-radius: 8px;
-    box-shadow: 20px 40px rgba(0, 0, 0, 0.1);
     font-family: Arial, sans-serif;
+    border-radius: 12px; 
+    overflow: hidden; 
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); 
 }
+
 
 .modal-principal::backdrop{
     background-color: rgba(0, 31, 63, 0.7);
     backdrop-filter: blur(1px);
 }
-.modal-header{
+.modal-header {
     background-color: #003366;
     color: white;
-    padding: 15px 20px;
+    padding: 15px 25px; /* Más padding para que respire */
     display: flex;
     justify-content: space-between;
     align-items: center;
+    /* El secreto para el efecto 'cápsula': */
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
 }
 
+.btn-cerrar-modal {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    color: rgba(255, 255, 255, 0.7); /* Un blanco sutil para el icono */
+    font-size: 1.5rem; /* Icono más grande */
+    transition: color 0.2s ease;
+    line-height: 1;
+}
+
+.btn-cerrar-modal i {
+    display: block;
+}
+
+.btn-cerrar-modal:hover {
+    color: #ffffff; /* Blanco puro al hover */
+}
+
+#modal-titulo {
+   font-size: 1.25rem;
+   font-weight: 600;
+   margin: 0;
+}
 .modal-body{
     padding: 20px;
     display: grid;
@@ -163,3 +191,79 @@
 }
 
 .oculto {display: none !important;}
+
+.contenedor-paginacion {
+    display: flex !important;     
+    flex-direction: row !important; 
+    justify-content: center;       
+    align-items: center;           
+    gap: 20px;                     
+    width: 100%;                  
+    margin: 30px 0 10px 0;         
+    box-sizing: border-box;
+}
+
+.btn-pagi {
+    background-color: #003366;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: background 0.2s ease;
+}
+
+.btn-pagi:hover:not(:disabled) {
+    background-color: #001F3F;
+}
+
+.btn-pagi:disabled {
+    background-color: #ccc;
+    color: #666;
+    cursor: not-allowed;
+}
+
+#info-paginacion {
+    white-space: nowrap;
+    font-weight: 600;
+    color: #333;
+}
+
+.action-btn-group {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 8px;
+}
+
+/* El botón base */
+.action-btn {
+    background: none;
+    border: none;
+    padding: 6px;
+    cursor: pointer;
+    color: #003366; /* Azul de la universidad */
+    font-size: 1.25rem;
+    transition: all 0.2s ease;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Efectos individuales al pasar el mouse */
+.view-btn:hover { 
+    background-color: rgba(0, 51, 102, 0.08); 
+}
+.edit-btn:hover { 
+    background-color: rgba(255, 193, 7, 0.15); 
+    color: #ffc107; /* Se vuelve amarillo sutil */
+}
+.delete-btn:hover { 
+    background-color: rgba(220, 53, 69, 0.15); 
+    color: #dc3545; /* Se vuelve rojo de borrado */
+}

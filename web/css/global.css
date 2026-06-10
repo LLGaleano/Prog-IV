@@ -1,45 +1,62 @@
-.lista-principal{
+.lista-principal {
     display: flex;
     flex-direction: column;
-    gap: 15px;
-    padding: 20px 0;
+    gap: 8px;              
+    padding: 20px 0;       
     list-style-type: none;
     margin: 0;
     background-color: #001F3F;
 }
 
-.contenedor-principal{
+body {
+    background: #F8F9FA;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* El cuerpo total mide el alto de la pantalla */
+    overflow-x: hidden; /* Evitamos scroll horizontal raro */
+}
+
+.contenedor-principal {
     display: flex;
     width: 100%;
+    flex-grow: 1; 
 }
-.contenedor-nav{
+.contenedor-nav {
     width: 250px;
-    min-height: 100vh;
-    flex-shrink: 0;
     background-color: #001F3F;
 }
 
-.link-nav{
+.link-nav {
     display: block;
     text-decoration: none;
-    color:#F8F9FA;
+    color: #F8F9FA;
+    padding: 12px 20px;    
+    font-weight: 500;
+    font-size: 0.95rem;
+    border-left: 4px solid transparent; 
+    transition: all 0.25s ease;         
 }
 
-.link-nav:hover{
-    border-left: 4px solid #F8F9FA;
-    padding-left: 25px;
+.link-nav:hover {
+    background-color: rgba(255, 255, 255, 0.08); 
+    border-left: 4px solid #F8F9FA;              
+    padding-left: 25px;                        
+    color: #ffffff;
 }
 
 header{
     background: #1B263B;
 }
 
-.header-principal{
+.header-principal {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px;
+    padding: 15px 30px; 
     width: 100%;
+    box-sizing: border-box; 
 }
 
 body{
@@ -66,17 +83,34 @@ h1{
 }
 
 /* tuve que hacer dos iconos de perfil porque no se alineaba el logo con el usuario */
-.icono-perfil{
+.icono-perfil {
     display: flex;
     justify-content: flex-end;
+    align-items: center; 
     color: #F8F9FA;
 }
 
 .icono-perfil2 {
-    padding: 5px 15px;
+    padding: 8px 16px;
     display: flex;
-    align-items: center;
-    gap: 5px;
+    align-items: center;  
+    gap: 8px;             
+    background-color: rgba(255, 255, 255, 0.1); 
+    border-radius: 20px;   
+    transition: background 0.2s ease;
+}
+
+
+.icono-perfil2 i {
+    font-size: 1.3rem;    
+    color: #F8F9FA;
+}
+
+.icono-perfil2 span {
+    font-size: 0.95rem;   
+    font-weight: 500;     
+    color: #F8F9FA;
+    letter-spacing: 0.3px;
 }
 
 main{
@@ -85,3 +119,50 @@ main{
     background: #F8F9FA;
 }
 
+.toast-notificacion {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #28a745; 
+    color: white;
+    padding: 14px 24px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    font-weight: 500;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    z-index: 9999; 
+    
+    
+    animation: entrarToast 0.3s ease forwards, salirToast 0.3s ease 2.7s forwards;
+}
+
+
+.toast-notificacion.info {
+    background-color: #003366;
+}
+
+/* Animaciones CSS */
+@keyframes entrarToast {
+    from {
+        transform: translateX(120%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes salirToast {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateX(120%);
+        opacity: 0;
+    }
+}
