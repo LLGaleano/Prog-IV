@@ -103,9 +103,9 @@ const llenarTabla = (objetoRespuesta) => {
 });
 };
 
-document.addEventListener('DOMContentLoaded', () => {
+/*document.addEventListener('DOMContentLoaded', () => {
     cargarEstudiantes(); // Llamada inicial uniforme
-});
+});*/
 
 
 buscadorEstudiante.addEventListener('keyup', () => {
@@ -134,7 +134,6 @@ document.addEventListener('DOMContentLoaded', async function() {
         const respuesta = await fetch('http://localhost:3000/students');
         const objetoRespuesta = await respuesta.json();
         llenarTabla(objetoRespuesta);
-        console.log("¡Datos de estudiantes cargados exitosamente!");
     } catch (error) {
         console.error("Error al traer los datos", error);
         tabla.innerHTML = '<tr><td colspan="8" class="text-center text-danger">Error de conexión al cargar los datos de estudiantes.</td></tr>';

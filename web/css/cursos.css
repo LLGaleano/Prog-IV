@@ -1,0 +1,108 @@
+.encabezado{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.encabezado h2{
+    color: #001F3F;
+    margin: 0;
+}
+
+.btn-agregar {
+    text-decoration: none; 
+    background-color: #009719;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-weight: bold;
+    display: inline; 
+    transition: background 0.2s ease;
+}
+
+.btn-agregar:hover {
+    background-color: #002244; 
+}
+
+.herramienta{
+    margin-bottom: 20px;
+}
+
+.buscador{
+    width: 100%;
+    max-width: 400px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+.contenedor-tabla{
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05px);
+}
+
+.tabla-cursos{
+    width: 100%;
+    
+}
+
+.tabla-cursos th{
+    background-color: #003366;
+    color: white;
+    text-align: left;
+    padding: 10px;
+}
+
+.tabla-cursos td{
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+    color:#444;
+}
+
+.tabla-cursos tr:hover{
+    background-color: #f8f9fa;
+}
+
+
+.contenedor-paginacion {
+    display: flex !important;     
+    flex-direction: row !important; 
+    justify-content: center;       
+    align-items: center;           
+    gap: 20px;                     
+    width: 100%;                  
+    margin: 30px 0 10px 0;         
+    box-sizing: border-box;
+}
+
+.btn-pagi {
+    background-color: #003366;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: background 0.2s ease;
+}
+
+.btn-pagi:hover:not(:disabled) {
+    background-color: #001F3F;
+}
+
+.btn-pagi:disabled {
+    background-color: #ccc;
+    color: #666;
+    cursor: not-allowed;
+}
+
+#info-paginacion {
+    white-space: nowrap;
+    font-weight: 600;
+    color: #333;
+}

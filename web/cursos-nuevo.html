@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/global.css"/>
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/themes/material_blue.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/es.js"></script>
+
+    <script src="js/cursos-nuevo.js" defer></script>
+    
+</head>
+<body>
+    <header class="header-principal"> 
+        <div class="logo-img hd">
+            <img src="img/Fcad-Logo.png" alt="logo de la Facultad">
+        </div>
+        <div class="titulo hd">
+            <h1>Cursos</h1>
+        </div>
+        <div class="icono-perfil hd">
+            <div class="icono-perfil2">
+                <i class="bx bx-user"></i>
+                <span>Usuario123</span>
+            </div>
+        </div>
+    </header>
+    <div class="contenedor-principal">
+        <aside class="contenedor-nav">
+            <nav>
+                <ul class="lista-principal">
+                    <li><a class="link-nav" href="index.html">Inicio</a></li>
+                    <li><a class="link-nav" href="cursos.html">Cursos</a></li>
+                    <li><a class="link-nav" href="estudiantes.html">Estudiantes</a></li>
+                    <li><a class="link-nav" href="inscriptos.html">Inscriptos</a></li>
+                </ul>
+            </nav>
+        </aside>
+        <main class="main-formulario">
+            <div class="formulario-contenedor">
+                
+                <div class="header-form">
+                    <h2>Crear Nuevo Curso</h2>
+                    <p>Complete los datos para dar de alta la materia</p>
+                </div>
+        
+                <div id="error" class="alert alert-danger" style="display: none; margin: 20px 30px 0 30px;" role="alert"></div>
+        
+                <form id="formulario" class="cuerpo-formulario" novalidate>
+                    
+                    <div class="campo-grupo">
+                        <label for="nombre">Nombre:</label>
+                        <input type="text" id="nombre" name="nombre" required>
+                    </div>
+        
+                    <div class="campo-grupo">
+                        <label for="descripcion">Descripción:</label>
+                        <textarea id="descripcion" name="descripcion" rows="3" required></textarea>
+                    </div>
+        
+                    <div class="fila-campos">
+                        <div class="campo-grupo">
+                            <label for="fechaInicio">Fecha de Inicio:</label>
+                            <input type="text" id="fechaInicio" name="fechaInicio" required>
+                        </div>
+                        <div class="campo-grupo">
+                            <label for="cantidadHoras">Cantidad de Horas:</label>
+                            <input type="number" id="cantidadHoras" name="cantidadHoras" required>
+                        </div>
+                    </div>
+        
+                    <div class="campo-grupo">
+                        <label for="cantidadInscriptos">Máxima Cantidad de Inscriptos:</label>
+                        <input type="number" id="cantidadInscriptos" name="cantidadInscriptos" required>
+                    </div>
+        
+                    <div class="acciones-formulario">
+                        <a href="#" class="btn-cancelar">Cancelar</a>
+                        <button id="btnGuardar" type="submit" class="btn-guardar">Crear Curso</button>
+                    </div>
+        
+                </form>
+            </div>
+        </main>
+    </div>
+    <footer>
+
+    </footer>
+</body>
+
+</html>

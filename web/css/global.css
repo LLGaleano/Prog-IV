@@ -1,3 +1,7 @@
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
 .lista-principal {
     display: flex;
     flex-direction: column;
@@ -165,4 +169,136 @@ main{
         transform: translateX(120%);
         opacity: 0;
     }
+}
+
+
+/*
+-----------------------------------------------------
+ESTO ES PARA REUTILIZAR EN LOS DIFERENTES FORMULARIOS
+-----------------------------------------------------
+*/
+
+.main-formulario {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.formulario-contenedor {
+    background: white;
+    width: 100%;
+    max-width: 650px;
+    border-radius: 12px; 
+    height: fit-content;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1); 
+    
+}
+
+.header-form {
+    background-color: #003366;
+    color: white;
+    padding: 25px 20px;
+    text-align: center;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+}
+
+.header-form h2 {
+    font-size: 1.5rem;
+    margin: 0 0 5px 0;
+}
+
+.header-form p {
+    font-size: 0.9rem;
+    margin: 0;
+    opacity: 0.9;
+}
+
+.cuerpo-formulario {
+    display: flex;
+    padding: 30px 30px 20px 30px;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.fila-campos {
+    display: flex;
+    gap: 20px; 
+}
+
+.campo-grupo {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.campo-grupo label {
+    font-weight: bold;
+    color: #333;
+    font-size: 0.95rem;
+}
+
+/* Añadidos textarea y select para que hereden el mismo diseño */
+.campo-grupo input,
+.campo-grupo textarea,
+.campo-grupo select {
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-family: inherit;
+}
+
+/* Acciones del formulario (Botones) */
+.acciones-formulario {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 15px;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+}
+
+.btn-cancelar {
+    color: #666;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+.btn-cancelar:hover {
+    color: #dc3545;
+}
+
+.btn-guardar {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.btn-guardar:hover {
+    background-color: #218838;
+}
+
+/* Estados de Error y Validación */
+.error-mensaje { 
+    color: #dc3545;          
+    font-size: 0.8rem;       
+    font-weight: 500;
+    margin-top: -4px;       
+    display: block; 
+}
+
+.input-error {
+    border-color: #dc3545 !important;
+    background-color: #fdf2f2;
 }
