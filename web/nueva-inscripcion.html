@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrar Nueva Inscripción</title>
+    <script src="js/nueva-inscripcion.js" defer></script>
+    <link rel="stylesheet" href="css/global.css"/>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+<body>
+    <header class="header-principal"> 
+        <div class="logo-img hd">
+            <img src="img/Fcad-Logo.png" alt="logo de la Facultad">
+        </div>
+        <div class="titulo hd">
+            <h1>Inscripciones</h1>
+        </div>
+        <div class="icono-perfil hd">
+            <div class="icono-perfil2">
+                <i class="bx bx-user"></i>
+                <span>Usuario123</span>
+            </div>
+        </div>
+    </header>
+    <div class="contenedor-principal">
+        <aside class="contenedor-nav">
+            <nav>
+                <ul class="lista-principal">
+                    <li><a class="link-nav" href="index.html">Inicio</a></li>
+                    <li><a class="link-nav" href="cursos.html">Cursos</a></li>
+                    <li><a class="link-nav" href="estudiantes.html">Estudiantes</a></li>
+                    <li><a class="link-nav" href="inscriptos.html">Inscriptos</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="main-formulario">
+            <div class="formulario-contenedor">
+                <div class="header-form">
+                    <h2>Nueva Inscripción a Curso</h2>
+                    <p>Complete los IDs de curso y estudiante para registrar una nueva inscripción.</p>
+                </div>
+                <form id="formNuevaInscripcion" class="cuerpo-formulario" novalidate>
+                    <div class="fila-campos">
+                        <div class="campo-grupo">
+                            <label for="inputCursoId">ID del Curso</label>
+                            <input type="number" id="inputCursoId" required min="1">
+                            <span id="error-id_curso" class="error-mensaje"></span>
+                        </div>
+                    </div>
+                    <div class="fila-campos">
+                        <div class="campo-grupo">
+                            <label for="inputEstudianteId">ID del Estudiante</label>
+                            <input type="number" id="inputEstudianteId" required min="1">
+                            <span id="error-id_estudiante" class="error-mensaje"></span>
+                        </div>
+                    </div>
+                    <div class="acciones-formulario">
+                        <a href="inscriptos.html" class="btn-cancelar">Cancelar y Volver</a>
+                        <button type="submit" id="btnGuardar" class="btn-guardar">
+                            <i class='bx bx-save'></i>Guardar Inscripción
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </main>
+    </div>
+</body>
+</html>
