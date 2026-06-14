@@ -1,22 +1,42 @@
 const express = require('express');
 const router = express.Router();
+const passport = require('passport');
+
 const inscripcionController = require('../controllers/inscripcionController');
 const { inscripcionesFindAllTransform } = require('../transformations/inscripcionTransformations');
 
 const {
-    createInscripcionValidation
+createInscripcionValidation
 } = require('../validations/inscripcionValidations');
 
-// GET ALL 
-router.get('/', inscripcionesFindAllTransform, inscripcionController.getInscripciones);
+// GET ALL
+router.get(
+'/',
+passport.authenticate('jwt', { session: false }),
+inscripcionesFindAllTransform,
+inscripcionController.getInscripciones
+);
 
-// GET BY ID 
-router.get('/:id', inscripcionController.searchInscripcion);
+// GET BY ID
+router.get(
+'/',
+passport.authenticate('jwt', { session: false }),
+inscripcionController.searchInscripcion
+);
 
-// POST 
-router.post('/', createInscripcionValidation, inscripcionController.createInscripcion);
+// POST
+router.post(
+'/',
+passport.authenticate('jwt', { session: false }),
+createInscripcionValidation,
+inscripcionController.createInscripcion
+);
 
-// DELETE 
-router.delete('/:id', inscripcionController.deleteInscripcion);
+// DELETE
+router.delete(
+'/',
+passport.authenticate('jwt', { session: false }),
+inscripcionController.deleteInscripcion
+);
 
 module.exports = router;
