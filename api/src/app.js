@@ -1,6 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-require('dotenv').config();
+//require('dotenv').config(); BORRAMOS ESTO PORQUE ES LA CORRECIÓN DE NACHO
 const passport = require('./config/passport');
 const authRoutes = require('./routes/authRoutes');
 

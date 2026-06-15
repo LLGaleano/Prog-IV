@@ -27,9 +27,18 @@ body {
     width: 100%;
     flex-grow: 1; 
 }
+
+/*.contenedor-nav {
+    width: 250px;
+    background-color: #001F3F;
+}ANTERIOR CONTENEDOR-NAV*/ 
+
 .contenedor-nav {
     width: 250px;
     background-color: #001F3F;
+
+    display: flex;
+    flex-direction: column;
 }
 
 .link-nav {
@@ -301,4 +310,16 @@ ESTO ES PARA REUTILIZAR EN LOS DIFERENTES FORMULARIOS
 .input-error {
     border-color: #dc3545 !important;
     background-color: #fdf2f2;
+}
+
+
+/*PARA EL BTN DE CERRAR SESIÓN*/
+.logout-container {
+    margin-top: auto;
+    padding-bottom: 20px;
+}
+
+.logout-link {
+    border-top: 1px solid rgba(255,255,255,0.15);
+    padding-top: 16px;
 }

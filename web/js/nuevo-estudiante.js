@@ -1,3 +1,8 @@
+const authJsonHeaders = () => ({
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${localStorage.getItem('token')}`
+});
+
 document.addEventListener('DOMContentLoaded', function() {
     flatpickr("#inputFechaNac", {
         locale: "es",                  
@@ -36,9 +41,10 @@ document.addEventListener('DOMContentLoaded', function() {
             };
 
             try {
-                const respuesta = await fetch('http://localhost:3000/students', {
+
+                const respuesta = await fetchConAuth('http://localhost:3000/students', {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: authJsonHeaders(),
                     body: JSON.stringify(nuevoEstudiante)
                 });
 
@@ -96,7 +102,9 @@ document.addEventListener('DOMContentLoaded', function() {
                                                   .some(span => span.style.display === 'block');
 
                 if (!tieneErroresVisibles) {
-                    window.location.href = 'estudiantes.html';
+                    //window.location.href = 'estudiantes.html';
+                    console.error(error);
+                    alert('Ocurrió un error');
                 } else {
                     alert('No se pudo establecer comunicación con el servidor de la API.');
                 }
@@ -104,6 +112,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
+
 
 // FUNCIÓN DEL TOAST (Asegurate de que quede acá abajo si no la tenías mapeada)
 const mostrarToast = (mensaje, tipo = 'exito') => {

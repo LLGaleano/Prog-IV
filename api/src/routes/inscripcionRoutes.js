@@ -19,7 +19,7 @@ inscripcionController.getInscripciones
 
 // GET BY ID
 router.get(
-'/',
+'/:id',
 passport.authenticate('jwt', { session: false }),
 inscripcionController.searchInscripcion
 );
@@ -34,7 +34,7 @@ inscripcionController.createInscripcion
 
 // DELETE
 router.delete(
-'/',
+'/:id',
 passport.authenticate('jwt', { session: false }),
 inscripcionController.deleteInscripcion
 );

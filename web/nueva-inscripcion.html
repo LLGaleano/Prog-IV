@@ -7,6 +7,8 @@
     <script src="js/nueva-inscripcion.js" defer></script>
     <link rel="stylesheet" href="css/global.css"/>
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    
+    <script src="js/auth.js"></script>
 </head>
 <body>
     <header class="header-principal"> 
@@ -19,12 +21,13 @@
         <div class="icono-perfil hd">
             <div class="icono-perfil2">
                 <i class="bx bx-user"></i>
-                <span>Usuario123</span>
+                <span id="usuarioLogueado">Usuario</span>
             </div>
         </div>
     </header>
     <div class="contenedor-principal">
         <aside class="contenedor-nav">
+
             <nav>
                 <ul class="lista-principal">
                     <li><a class="link-nav" href="index.html">Inicio</a></li>
@@ -33,6 +36,13 @@
                     <li><a class="link-nav" href="inscriptos.html">Inscriptos</a></li>
                 </ul>
             </nav>
+        
+            <div class="logout-container">
+                <a href="#" id="btnLogout" class="link-nav logout-link">
+                    Cerrar sesión
+                </a>
+            </div>
+        
         </aside>
 
         <main class="main-formulario">

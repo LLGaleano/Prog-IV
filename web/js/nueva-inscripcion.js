@@ -1,3 +1,8 @@
+const authJsonHeaders = () => ({
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${localStorage.getItem('token')}`
+});
+
 document.addEventListener('DOMContentLoaded', function() {
     const formNuevaInscripcion = document.getElementById('formNuevaInscripcion');
 
@@ -11,9 +16,9 @@ document.addEventListener('DOMContentLoaded', function() {
             };
 
             try {
-                const respuesta = await fetch('http://localhost:3000/inscripciones', {
+                const respuesta = await fetchConAuth('http://localhost:3000/inscripciones', {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: authJsonHeaders(),
                     body: JSON.stringify(nuevoInscripto)
                 });
 

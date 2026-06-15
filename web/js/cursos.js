@@ -2,6 +2,12 @@
 const app = express();
 const port = 3004;*/ 
 
+const token = localStorage.getItem('token');
+
+if (!token) {
+    window.location.href = 'login.html';
+}
+
 document.addEventListener('DOMContentLoaded',function(){
 const tabla = document.getElementById('tbody');
 datos.forEach(curso => {

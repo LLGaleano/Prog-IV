@@ -5,9 +5,26 @@ const modal = document.getElementById('modal-estudiante');
 const formEstudiante = document.getElementById('form-estudiante');
 const btnCerrarModal = document.getElementById('btn-cerrar-modal');
 
+const token = localStorage.getItem('token');
+
+if (!token) {
+    window.location.href = 'login.html';
+}
+
+const authHeaders = () => ({
+    'Authorization': `Bearer ${localStorage.getItem('token')}`
+});
+
+const authJsonHeaders = () => ({
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${localStorage.getItem('token')}`
+});
+
 const btnAnt = document.getElementById('btn-ant');
 const btnSig = document.getElementById('btn-sig');
 const infoPaginacion = document.getElementById('info-paginacion');
+
+
 
 let paginaActual = 1;
 const limitePorPagina = 20;
@@ -27,14 +44,15 @@ const cargarEstudiantes = async () => {
             }
         }
 
-        const respuesta = await fetch(url);
+        const respuesta = await fetchConAuth(url, {
+            headers: authHeaders()
+        });
         const objetoRespuesta = await respuesta.json();
         
         // 1. Renderizamos la tabla
         llenarTabla(objetoRespuesta);
         
         // 2. Calculamos el total de páginas basándonos en el total que manda el Back
-        // Ejemplo: si total es 45 y limit es 20 -> Math.ceil(45/20) = 3 páginas
         const totalRegistros = objetoRespuesta.total || 0;
         totalDePaginas = Math.ceil(totalRegistros / limitePorPagina) || 1;
 
@@ -50,7 +68,7 @@ const cargarEstudiantes = async () => {
         tabla.innerHTML = '<tr><td colspan="8" class="text-center text-danger">Error de conexión al cargar los datos.</td></tr>';
     }
 };
-// Función para llenar la tabla con los datos del DTO (camelCase)
+// Función para llenar la tabla 
 const llenarTabla = (objetoRespuesta) => {
     tabla.innerHTML = ''; 
     const listaEstudiantes = objetoRespuesta.data;
@@ -103,10 +121,9 @@ const llenarTabla = (objetoRespuesta) => {
 });
 };
 
-/*document.addEventListener('DOMContentLoaded', () => {
-    cargarEstudiantes(); // Llamada inicial uniforme
-});*/
-
+document.addEventListener('DOMContentLoaded', () => {
+    cargarEstudiantes();
+});
 
 buscadorEstudiante.addEventListener('keyup', () => {
     paginaActual = 1; 
@@ -127,50 +144,6 @@ btnSig.addEventListener('click', () => {
     }
 });
 
-// Carga inicial al inicializar el árbol DOM
-document.addEventListener('DOMContentLoaded', async function() {
-    if (!tabla) return;
-    try {
-        const respuesta = await fetch('http://localhost:3000/students');
-        const objetoRespuesta = await respuesta.json();
-        llenarTabla(objetoRespuesta);
-    } catch (error) {
-        console.error("Error al traer los datos", error);
-        tabla.innerHTML = '<tr><td colspan="8" class="text-center text-danger">Error de conexión al cargar los datos de estudiantes.</td></tr>';
-    }
-});
-
-// Evento de escucha en el buscador conectado al endpoint dinámico
-buscadorEstudiante.addEventListener('keyup', async (evento) => {
-    const texto = evento.target.value.trim();
-
-    // Si el usuario borra todo, traemos el listado limpio
-    if (texto === '') {
-        const respuesta = await fetch('http://localhost:3000/students');
-        const objetoRespuesta = await respuesta.json();
-        llenarTabla(objetoRespuesta);
-        return;
-    }
-
-    try {
-        let url = 'http://localhost:3000/students';
-        
-        // El truco: Si son solo números, filtramos por documento. Si no, por apellido.
-        if (/^\d+$/.test(texto)) {
-            url += `?documento=${texto}`;
-        } else {
-            url += `?apellido=${texto}`;
-        }
-
-        const respuesta = await fetch(url);
-        const objetoRespuesta = await respuesta.json();
-        llenarTabla(objetoRespuesta);
-    } catch (error) {
-        console.error("Error al buscar:", error);
-    }
-});
-
-
 tabla.addEventListener('click', async (evento) => {
     
     const boton = evento.target.closest('.action-btn');
@@ -184,7 +157,12 @@ tabla.addEventListener('click', async (evento) => {
     
     if (boton.classList.contains('view-btn')) {
         try {
-            const respuesta = await fetch(`http://localhost:3000/students/${idEstudiante}`);
+            const respuesta = await fetchConAuth(
+                `http://localhost:3000/students/${idEstudiante}`,
+                {
+                    headers: authHeaders()
+                }
+            );
             const estudiante = await respuesta.json();
 
            
@@ -209,7 +187,12 @@ tabla.addEventListener('click', async (evento) => {
 
     if (boton.classList.contains('edit-btn')) {
         try {
-            const respuesta = await fetch(`http://localhost:3000/students/${idEstudiante}`);
+            const respuesta = await fetchConAuth(
+                `http://localhost:3000/students/${idEstudiante}`,
+                {
+                    headers: authHeaders()
+                }
+            );
             const estudiante = await respuesta.json();
 
             document.getElementById('modal-titulo').innerText = 'Editar Estudiante';
@@ -235,9 +218,13 @@ tabla.addEventListener('click', async (evento) => {
         if (!confirmar) return;
 
         try {
-            const respuesta = await fetch(`http://localhost:3000/students/${idEstudiante}`, {
-                method: 'DELETE'
-            });
+            const respuesta = await fetchConAuth(
+                `http://localhost:3000/students/${idEstudiante}`,
+                {
+                    method: 'DELETE',
+                    headers: authHeaders()
+                }
+            );
 
             if (respuesta.ok) {
                 mostrarToast('Estudiante dado de baja correctamente.');
@@ -267,16 +254,21 @@ if (formEstudiante) {
         };
 
         try {
-            const respuesta = await fetch(`http://localhost:3000/students/${idEstudiante}`, {
+            const respuesta = await fetchConAuth(`http://localhost:3000/students/${idEstudiante}`, {
                 method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
+                headers: authJsonHeaders(),
                 body: JSON.stringify(estudianteActualizado) 
             });
 
             if (respuesta.ok) {
                 mostrarToast('¡Estudiante modificado con éxito!');
                 modal.close(); 
-                const res = await fetch('http://localhost:3000/students');
+                const res = await fetchConAuth(
+                    'http://localhost:3000/students',
+                    {
+                        headers: authHeaders()
+                    }
+                );
                 const objetoRespuesta = await res.json();
                 llenarTabla(objetoRespuesta);
             } else {

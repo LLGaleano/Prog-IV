@@ -7,6 +7,10 @@ const btnAnt = document.getElementById('btn-ant');
 const btnSig = document.getElementById('btn-sig');
 const infoPaginacion = document.getElementById('info-paginacion');
 
+const authHeaders = () => ({
+    Authorization: `Bearer ${localStorage.getItem('token')}`
+});
+
 let paginaActual = 1;
 const limitePorPagina = 20;
 let totalDePaginas = 1;
@@ -20,7 +24,9 @@ const cargarInscripciones = async () => {
             url += `&documentoEstudiante=${textoBusqueda}`;
         }
 
-        const respuesta = await fetch(url);
+        const respuesta = await fetchConAuth(url, {
+            headers: authHeaders()
+        });
         const objetoRespuesta = await respuesta.json();
         
         llenarTabla(objetoRespuesta.data);
@@ -105,7 +111,11 @@ tabla.addEventListener('click', async (evento) => {
 
     if (boton.classList.contains('view-btn')) {
         try {
-            const respuesta = await fetch(`http://localhost:3000/inscripciones/${id}`);
+            const respuesta = await fetchConAuth(`http://localhost:3000/inscripciones/${id}`,
+                {
+                    headers: authHeaders()
+                }
+            );
             const inscripcion = await respuesta.json();
 
             document.getElementById('modal-id').value = inscripcion.idInscripcion;
@@ -128,9 +138,13 @@ tabla.addEventListener('click', async (evento) => {
         if (!confirmar) return;
 
         try {
-            const respuesta = await fetch(`http://localhost:3000/inscripciones/${id}`, {
-                method: 'DELETE'
-            });
+            const respuesta = await fetchConAuth(
+                `http://localhost:3000/inscripciones/${id}`,
+                {
+                    method: 'DELETE',
+                    headers: authHeaders()
+                }
+            );
 
             if (respuesta.ok) {
                 alert('Inscripción cancelada correctamente.');
