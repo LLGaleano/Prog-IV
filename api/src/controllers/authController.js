@@ -26,7 +26,8 @@ const login = async (req, res) => {
             
             const refreshToken = jwt.sign(
                 {
-                    id_usuario: user.id_usuario
+                    id_usuario: user.id_usuario,
+                    nombre_usuario: user.nombre_usuario
                 },
                 process.env.JWT_REFRESH_SECRET,
                 {

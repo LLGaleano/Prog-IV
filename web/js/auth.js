@@ -1,7 +1,18 @@
 function logout() {
-    localStorage.removeItem('token');
-    localStorage.removeItem('refreshToken');
-    window.location.href = 'login.html';
+
+    mostrarToast(
+        'Cerrando sesión...',
+        'info'
+    );
+
+    setTimeout(() => {
+
+        localStorage.removeItem('token');
+        localStorage.removeItem('refreshToken');
+
+        window.location.href = 'login.html';
+
+    }, 1500);
 }
 
 
@@ -82,37 +93,15 @@ async function fetchConAuth(url, opciones = {}) {
     return respuesta;
 }
 
-async function renovarToken() {
+function verificarSesion() {
 
-    const refreshToken =
-        localStorage.getItem('refreshToken');
+    const token = localStorage.getItem('token');
+    const refreshToken = localStorage.getItem('refreshToken');
 
-    const respuesta = await fetch(
-        'http://localhost:3000/auth/refresh',
-        {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                refreshToken
-            })
-        }
-    );
-
-    if (!respuesta.ok) {
-        logout();
-        return null;
+    if (!token && !refreshToken) {
+        window.location.href = 'login.html';
     }
 
-    const data = await respuesta.json();
-
-    localStorage.setItem(
-        'token',
-        data.accessToken
-    );
-
-    return data.accessToken;
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -142,4 +131,4 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
-const token = localStorage.getItem('token');
+//const token = localStorage.getItem('token');

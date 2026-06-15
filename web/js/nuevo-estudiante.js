@@ -3,6 +3,8 @@ const authJsonHeaders = () => ({
     'Authorization': `Bearer ${localStorage.getItem('token')}`
 });
 
+
+
 document.addEventListener('DOMContentLoaded', function() {
     flatpickr("#inputFechaNac", {
         locale: "es",                  
@@ -114,12 +116,3 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 
-// FUNCIÓN DEL TOAST (Asegurate de que quede acá abajo si no la tenías mapeada)
-const mostrarToast = (mensaje, tipo = 'exito') => {
-    const toast = document.createElement('div');
-    toast.className = `toast-notificacion ${tipo}`;
-    const icono = tipo === 'exito' ? 'bx-check-circle' : 'bx-info-circle';
-    toast.innerHTML = `<i class="bx ${icono}" style="font-size: 1.25rem;"></i> <span>${mensaje}</span>`;
-    document.body.appendChild(toast);
-    setTimeout(() => { toast.remove(); }, 3000);
-};

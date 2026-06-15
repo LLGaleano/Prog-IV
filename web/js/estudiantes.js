@@ -5,9 +5,9 @@ const modal = document.getElementById('modal-estudiante');
 const formEstudiante = document.getElementById('form-estudiante');
 const btnCerrarModal = document.getElementById('btn-cerrar-modal');
 
-const token = localStorage.getItem('token');
+const refreshToken = localStorage.getItem('refreshToken');
 
-if (!token) {
+if (!refreshToken) {
     window.location.href = 'login.html';
 }
 
@@ -288,16 +288,3 @@ if (btnCerrarModal) {
     });
 }
 
-const mostrarToast = (mensaje, tipo = 'exito') => {
-    const toast = document.createElement('div');
-    toast.className = `toast-notificacion ${tipo}`;
-    
-    const icono = tipo === 'exito' ? 'bx-check-circle' : 'bx-info-circle';
-    toast.innerHTML = `<i class="bx ${icono}" style="font-size: 1.25rem;"></i> <span>${mensaje}</span>`;
-    
-    document.body.appendChild(toast);
-
-    setTimeout(() => {
-        toast.remove();
-    }, 3000);
-};

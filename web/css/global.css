@@ -180,6 +180,16 @@ main{
     }
 }
 
+.toast-notificacion.exito {
+    background-color: #28a745;
+    color: white;
+}
+
+.toast-notificacion.error {
+    background-color: #dc3545;
+    color: white;
+}
+
 
 /*
 -----------------------------------------------------
