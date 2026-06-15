@@ -6,7 +6,7 @@ const btnCerrarModal = document.getElementById('btn-cerrar-modal');
 const btnAnt = document.getElementById('btn-ant');
 const btnSig = document.getElementById('btn-sig');
 const infoPaginacion = document.getElementById('info-paginacion');
-verificarSesion();
+
 const authHeaders = () => ({
     Authorization: `Bearer ${localStorage.getItem('token')}`
 });

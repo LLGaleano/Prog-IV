@@ -1,15 +1,10 @@
-// ELEMENTOS DEL DOM
+
 const tabla = document.getElementById('tbody'); 
 const buscadorEstudiante = document.querySelector('.buscador'); 
 const modal = document.getElementById('modal-estudiante'); 
 const formEstudiante = document.getElementById('form-estudiante');
 const btnCerrarModal = document.getElementById('btn-cerrar-modal');
 
-const refreshToken = localStorage.getItem('refreshToken');
-
-if (!refreshToken) {
-    window.location.href = 'login.html';
-}
 
 const authHeaders = () => ({
     'Authorization': `Bearer ${localStorage.getItem('token')}`
@@ -147,14 +142,10 @@ btnSig.addEventListener('click', () => {
 tabla.addEventListener('click', async (evento) => {
     
     const boton = evento.target.closest('.action-btn');
-    
-   
     if (!boton) return;
-
-    
+  
     const idEstudiante = boton.dataset.id;
-
-    
+   
     if (boton.classList.contains('view-btn')) {
         try {
             const respuesta = await fetchConAuth(

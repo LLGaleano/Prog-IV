@@ -2,7 +2,6 @@
 const app = express();
 const port = 3004;*/ 
 
-verificarSesion();
 
 document.addEventListener('DOMContentLoaded',function(){
 const tabla = document.getElementById('tbody');

@@ -28,5 +28,4 @@ const iniciar = () => {
     }
 };
 
-verificarSesion();
 document.addEventListener('DOMContentLoaded', iniciar);
