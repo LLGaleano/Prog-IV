@@ -1,17 +1,14 @@
-// ESCUCHADOR DE CARGA: Verificamos si venimos de una redirección por expiración
 document.addEventListener('DOMContentLoaded', () => {
     const parametrosURL = new URLSearchParams(window.location.search);
     
     if (parametrosURL.get('sesion') === 'expirada') {
-        // Mostramos tu toast original de ui.js
         mostrarToast('Tu sesión ha expirado. Por favor, inicia sesión nuevamente.', 'info');
         
-        // Limpiamos la URL para que no quede el "?sesion=expirada" feo si el usuario recarga la página
+        // Limpiamos la URL para que no quede sucio si se recarga la pagina
         window.history.replaceState({}, document.title, window.location.pathname);
     }
 });
 
-// TU FORMULARIO DE LOGIN ORIGINAL (Queda exactamente igual)
 document.getElementById('loginForm').addEventListener('submit', async (e) => {
     e.preventDefault();
 

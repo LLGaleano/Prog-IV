@@ -1,69 +1,68 @@
-/*import express from 'express';
-const app = express();
-const port = 3004;*/ 
+let paginaActual = 1;
+let totalPaginas = 1;
 
+document.addEventListener('DOMContentLoaded', async () => {
+    await cargarCursos(paginaActual);
 
-document.addEventListener('DOMContentLoaded',function(){
-const tabla = document.getElementById('tbody');
-datos.forEach(curso => {
-    const fila = document.createElement('tr');
-    fila.innerHTML = `
-        <td>${curso.idCurso}</td>
-        <td>${curso.nombre}</td>
-        <td>${curso.descripcion}</td>
-        <td>${new Date(curso.fechaInicio).toLocaleDateString()}</td>
-        <td>${curso.inscriptos}</td>
-        <td>${curso.inscriptosMax}</td>
-    `;
-    tabla.appendChild(fila);
-});});
-
-document.addEventListener('DOMContentLoaded', () => {
-    llenarTabla(datos);
-});
-
-const datos = [
-    {
-        idCurso: 1,
-        nombre: "Programación IV",
-        descripcion: "Backend con Node.js",
-        fechaInicio: "2026-06-15",
-        inscriptos: 35,
-        inscriptosMax: 40
-    },
-    {
-        idCurso: 2,
-        nombre: "Base de Datos",
-        descripcion: "PostgreSQL",
-        fechaInicio: "2026-07-01",
-        inscriptos: 20,
-        inscriptosMax: 30
+    //boton anterior
+    const btnAnt = document.getElementById('btn-ant');
+    if (btnAnt) {
+        btnAnt.addEventListener('click', async () => {
+            if (paginaActual > 1) {
+                paginaActual--;
+                await cargarCursos(paginaActual);
+            }
+        });
     }
-];
-/*
-document.addEventListener('DOMContentLoaded', async function() {
-
-    const respuesta = await fetch('http://localhost:3000/courses');
-    const datos = await respuesta.json();
-
-    const tabla = document.getElementById('tbody');
-
-    datos.forEach(curso => {
-        const fila = document.createElement('tr');
-
-        fila.innerHTML = `
-            <td>${curso.idCurso}</td>
-            <td>${curso.nombre}</td>
-            <td>${curso.descripcion}</td>
-            <td>${new Date(curso.fechaInicio).toLocaleDateString()}</td>
-            <td>${curso.cantidadHoras}</td>
-            <td>${curso.inscriptosMax}</td>
-        `;
-
-        tabla.appendChild(fila);
-    });
+    //boton siguiente
+    const btnSig = document.getElementById('btn-sig');
+    if (btnSig) {
+        btnSig.addEventListener('click', async () => {
+            if (paginaActual < totalPaginas) {
+                paginaActual++;
+                await cargarCursos(paginaActual);
+            }
+        });
+    }
 });
-*/ //ESTO VA A FUNCIONAR CUANDO ESTÉ EL BACK, REEMPLAZAR CON EL BLOQUE AL PRINCIPIO DEL ARCHIVO
 
+async function cargarCursos(page) {
+    try {
+        const respuesta = await fetchConAuth(`http://localhost:3000/cursos?page=${page}&limit=20`);
 
+        if (respuesta && respuesta.ok) {
+            const JSONData = await respuesta.json();
+            
+            const cursos = JSONData.data; 
+            
+            totalPaginas = JSONData.totalPages || 1; 
+            paginaActual = JSONData.page || 1;
 
+            const tabla = document.getElementById('tbody');
+            tabla.innerHTML = ''; 
+
+            cursos.forEach(curso => {
+                const fila = document.createElement('tr');
+
+                fila.innerHTML = `
+                    <td>${curso.idCurso}</td>
+                    <td>${curso.nombre}</td>
+                    <td>${curso.descripcion}</td>
+                    <td>${curso.fechaInicio}</td>
+                    <td>0</td> <td>${curso.inscriptosMax}</td>
+                    <td><button style="cursor:pointer;"><i class='bx bx-search'></i></button></td>
+                `;
+
+                tabla.appendChild(fila);
+            });
+            
+            document.getElementById('info-paginacion').textContent = `Página ${paginaActual} de ${totalPaginas}`;
+
+            //Se deshabilitan los botones si ya no hay
+            document.getElementById('btn-ant').disabled = (paginaActual === 1);
+            document.getElementById('btn-sig').disabled = (paginaActual === totalPaginas);
+        }
+    } catch (error) {
+        console.error('Error al conectar con el backend:', error);
+    }
+}

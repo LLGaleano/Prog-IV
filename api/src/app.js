@@ -7,6 +7,7 @@ const authRoutes = require('./routes/authRoutes');
 
 const studentRoutes = require('./routes/studentRoutes');
 const inscripcionRoutes = require('./routes/inscripcionRoutes');
+const cursosRoutes = require('./routes/cursosRoutes');
 
 
 const pool = require('./db/connection');
@@ -17,6 +18,7 @@ app.use(cors());
 app.use(express.json());
 app.use('/students', studentRoutes);
 app.use('/inscripciones', inscripcionRoutes);
+app.use('/cursos', cursosRoutes);
 app.use('/auth', authRoutes);
 
 pool.connect()
