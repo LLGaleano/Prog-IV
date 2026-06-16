@@ -19,13 +19,13 @@ const validate = (req, res, next) => {
 // Conjunto de reglas comunes aplicadas de manera idéntica tanto al dar de Alta como al Editar un Estudiante.
  
 const commonValidations = [
-    // Validación del documento (Coincide con VARCHAR(20) en PostgreSQL)
+    // Validación del documento 
     body('documento')
         .notEmpty().withMessage('Documento obligatorio')
         .isLength({ min: 7, max: 20 }).withMessage('El documento debe tener entre 7 y 20 caracteres')
         .isAlphanumeric(undefined, { ignore: ' .-' }).withMessage('El documento contiene caracteres inválidos (solo números, letras, puntos o guiones)'),
 
-    // Validación de cadenas de texto obligatorias aplicando .trim() para limpiar espacios vacíos accidentales
+    // Validación de cadenas de texto obligatorias aplicando .trim() para limpiar espacios vacíos 
     body('apellido')
         .notEmpty().withMessage('Apellido obligatorio')
         .trim()
@@ -43,7 +43,7 @@ const commonValidations = [
         .trim()
         .isLength({ max: 255 }).withMessage('Máximo 255 caracteres soportados'),
 
-    // Validación estricta del formato de fecha ISO (AAAA-MM-DD)
+    // Validación estricta del formato de fecha (AAAA-MM-DD)
     body('fecha_nacimiento')
         .notEmpty().withMessage('Fecha de nacimiento obligatoria')
         .isISO8601().withMessage('Formato de fecha inválido (Debe cumplimentar AAAA-MM-DD)')

@@ -30,7 +30,6 @@ const estudiantesFindAllTransform = (req, res, next) => {
         orderDirection = asc === "true" ? "ASC" : "DESC";
     }
 
-    // CLAVE: Usamos 'studentFilter' para evitar que Express lo confunda con su propia función nativa
     req.studentFilter = filterObj; 
     req.orderField = orderField;
     req.orderDirection = orderDirection;

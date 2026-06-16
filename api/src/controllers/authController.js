@@ -31,7 +31,7 @@ const login = async (req, res) => {
                 },
                 process.env.JWT_REFRESH_SECRET,
                 {
-                    expiresIn: '7d'
+                    expiresIn: '8h'
                 }
             );
             

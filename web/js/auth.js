@@ -1,9 +1,9 @@
-// === 1. CONTROL DE ACCESO INMEDIATO (Validación de URLs) ===
+// CONTROL DE ACCESO INMEDIATO (Validación de URLs)
 if (!window.location.pathname.includes('login.html')) {
     const token = localStorage.getItem('token');
     const refreshToken = localStorage.getItem('refreshToken');
 
-    // CASO A: Entrada forzada por URL sin estar logueado (Rebote instantáneo)
+    // CASO A: Entrada forzada por URL sin estar logueado
     if (!token && !refreshToken) {
         window.location.href = 'login.html';
     } 
@@ -23,7 +23,7 @@ if (!window.location.pathname.includes('login.html')) {
     }
 }
 
-// === 2. FUNCIÓN DE LOGOUT VOLUNTARIO ===
+// FUNCIÓN DE LOGOUT VOLUNTARIO 
 function logout() {
     mostrarToast('Cerrando sesión...', 'info');
     
@@ -43,7 +43,7 @@ function parseJwt(token) {
     }
 }
 
-// === 3. RENOVACIÓN DE TOKENS Y FETCH MANEJO DE 401 ===
+// RENOVACIÓN DE TOKENS Y FETCH MANEJO DE 401
 async function renovarToken() {
     const refreshToken = localStorage.getItem('refreshToken');
 
@@ -100,7 +100,7 @@ async function fetchConAuth(url, opciones = {}) {
     return respuesta;
 }
 
-// === 4. MANEJO DE INTERFAZ ===
+// MANEJO DE INTERFAZ 
 document.addEventListener('DOMContentLoaded', () => {
     if (window.location.pathname.includes('login.html')) return;
 

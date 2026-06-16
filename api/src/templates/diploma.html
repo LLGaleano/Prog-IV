@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Diplomas del Curso</title>
+    <style>
+        /* Configuramos el cuerpo para formato horizontal A4 */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #ffffff;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Salto de página para que Puppeteer cree una hoja nueva por alumno */
+        .page-break {
+            page-break-after: always;
+            box-sizing: border-box;
+            width: 297mm;  /* Ancho A4 Horizontal */
+            height: 210mm; /* Alto A4 Horizontal */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        /* Evita una página en blanco colgada al final del archivo */
+        .page-break:last-child {
+            page-break-after: avoid;
+        }
+
+        /* El contenedor del diseño del diploma */
+        .diploma-container {
+            border: 10px double #1a365d;
+            padding: 40px;
+            width: 90%;
+            height: 85%;
+            background-color: #ffffff;
+            text-align: center;
+            position: relative;
+        }
+
+        h1 {
+            color: #1a365d;
+            font-size: 38px;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+        }
+
+        h2 {
+            font-size: 20px;
+            color: #4a5568;
+            font-weight: normal;
+            margin-bottom: 35px;
+        }
+
+        .congratulations {
+            font-style: italic;
+            font-size: 18px;
+            color: #718096;
+        }
+
+        .name {
+            font-size: 30px;
+            font-weight: bold;
+            color: #2b6cb0;
+            border-bottom: 2px solid #e2e8f0;
+            display: inline-block;
+            padding-bottom: 5px;
+            margin: 15px 0;
+        }
+
+        .course-text {
+            font-size: 18px;
+            color: #2d3748;
+            margin: 15px 0;
+        }
+
+        .course-name {
+            font-weight: bold;
+            color: #1a365d;
+        }
+
+        .footer-info {
+            position: absolute;
+            bottom: 40px;
+            left: 40px;
+            right: 40px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            color: #718096;
+        }
+    </style>
+</head>
+<body>
+
+    {{#each alumnos}}
+    <div class="page-break">
+        <div class="diploma-container">
+            <h1>Certificado de Asistencia</h1>
+            <h2>Facultad de Ciencias de la Administración - UNER</h2>
+            
+            <p class="congratulations">Se otorga el presente certificado a:</p>
+            <div class="name">{{this.nombres}} {{this.apellido}}</div>
+            
+            <p class="course-text">
+                Por su participación activa en el curso de grado: <br>
+                <span class="course-name">"{{../curso_nombre}}"</span>
+            </p>
+            
+            <p>Con una carga horaria total de <strong>{{../curso_horas}} horas</strong>.</p>
+            
+            <div class="footer-info">
+                <div>Fecha de Emisión: {{../fecha_actual}}</div>
+                <div>Documento: {{this.documento}}</div>
+            </div>
+        </div>
+    </div>
+    {{/each}}
+
+</body>
+</html>
