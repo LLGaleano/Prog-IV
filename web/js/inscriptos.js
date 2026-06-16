@@ -124,7 +124,7 @@ tabla.addEventListener('click', async (evento) => {
             document.getElementById('modal-dni').value = inscripcion.estudianteDocumento;
             document.getElementById('modal-fecha').value = inscripcion.fechaHoraInscripcion;
             document.getElementById('modal-estado').value = inscripcion.estadoDescripcion;
-            document.getElementById('modal-usuario-modif').value = inscripcion.idUsuarioModificacion;
+            document.getElementById('modal-usuario-modif').value = inscripcion.usuarioModificacionNombre;
             document.getElementById('modal-fecha-modif').value = inscripcion.fechaHoraModificacion;
 
             modal.showModal(); 
@@ -147,13 +147,14 @@ tabla.addEventListener('click', async (evento) => {
             );
 
             if (respuesta.ok) {
-                alert('Inscripción cancelada correctamente.');
+                mostrarToast('Inscripción cancelada correctamente.');
                 cargarInscripciones(); 
             } else {
-                alert('No se pudo cancelar la inscripción.');
+                mostrarToast('No se pudo cancelar la inscripción.', 'error');
             }
         } catch (error) {
             console.error(error);
+            mostrarToast('Error de conexión al cancelar la inscripción.', 'error');
         }
     }
 });

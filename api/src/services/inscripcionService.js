@@ -34,6 +34,10 @@ const deleteInscripcion = async (id, id_usuario_modificacion) => {
     return await inscripcionRepository.getById(id);
 };
 
+const getCursos = async () => {
+    return await inscripcionRepository.getCursos();
+};
+
 module.exports = {
     getAllInscripciones,
     searchInscripcionID,
@@ -42,5 +46,6 @@ module.exports = {
     getEstudianteInfo,
     countInscriptosCurso,
     createInscripcion,
-    deleteInscripcion
+    deleteInscripcion,
+    getCursos
 };

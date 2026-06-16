@@ -13,6 +13,7 @@ const inscripcionDTO = (inscripcion) => {
         idInscripcionEstado: inscripcion.id_inscripcion_estado,
         estadoDescripcion: inscripcion.estado_descripcion,
         idUsuarioModificacion: inscripcion.id_usuario_modificacion,
+        usuarioModificacionNombre: inscripcion.usuario_modificacion_nombre || 'Sistema',
         fechaHoraModificacion: inscripcion.fecha_hora_modificacion
     };
 };

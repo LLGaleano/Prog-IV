@@ -17,6 +17,13 @@ inscripcionesFindAllTransform,
 inscripcionController.getInscripciones
 );
 
+// GET cursos
+router.get(
+    '/cursos',
+    passport.authenticate('jwt', { session: false }),
+    inscripcionController.getCursos
+);
+
 // GET BY ID
 router.get(
 '/:id',
