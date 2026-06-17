@@ -50,11 +50,13 @@ const getAll = async (filter = {}, limit = 20, offset = 0, order = 'id_inscripci
     // Query de Datos
     let query = `
         SELECT i.*, c.nombre as curso_nombre, ie.descripcion as estado_descripcion,
-               e.documento as estudiante_documento, e.apellido as estudiante_apellido, e.nombres as estudiante_nombres
+               e.documento as estudiante_documento, e.apellido as estudiante_apellido, e.nombres as estudiante_nombres,
+               u.nombre_usuario as usuario_modificacion_nombre
         FROM inscripciones i
         JOIN cursos c ON i.id_curso = c.id_curso
         JOIN estudiantes e ON i.id_estudiante = e.id_estudiante
         JOIN inscripciones_estados ie ON i.id_inscripcion_estado = ie.id_inscripcion_estado
+        LEFT JOIN usuarios u ON i.id_usuario_modificacion = u.id_usuario
         ${whereClause}
         ORDER BY ${dbOrderField} ${asc}
     `;
@@ -77,11 +79,13 @@ const getAll = async (filter = {}, limit = 20, offset = 0, order = 'id_inscripci
 const getById = async (id) => {
     const result = await pool.query(`
         SELECT i.*, c.nombre as curso_nombre, ie.descripcion as estado_descripcion,
-               e.documento as estudiante_documento, e.apellido as estudiante_apellido, e.nombres as estudiante_nombres
+               e.documento as estudiante_documento, e.apellido as estudiante_apellido, e.nombres as estudiante_nombres,
+               u.nombre_usuario as usuario_modificacion_nombre
         FROM inscripciones i
         JOIN cursos c ON i.id_curso = c.id_curso
         JOIN estudiantes e ON i.id_estudiante = e.id_estudiante
         JOIN inscripciones_estados ie ON i.id_inscripcion_estado = ie.id_inscripcion_estado
+        LEFT JOIN usuarios u ON i.id_usuario_modificacion = u.id_usuario
         WHERE i.id_inscripcion = $1
     `, [id]);
     return result.rows[0];
@@ -143,6 +147,16 @@ const updateEstado = async (id, id_usuario_modificacion) => {
     `, [id_usuario_modificacion, id]);
 };
 
+const getCursos = async () => {
+    const result = await pool.query(`
+        SELECT id_curso, nombre
+        FROM cursos
+        WHERE id_curso_estado IN (1, 2)
+        ORDER BY nombre ASC
+    `);
+    return result.rows;
+};
+
 module.exports = {
     getAll,
     getById,
@@ -151,5 +165,6 @@ module.exports = {
     getEstudianteInfo,
     countInscriptosCurso,
     create,
-    updateEstado
+    updateEstado,
+    getCursos
 };

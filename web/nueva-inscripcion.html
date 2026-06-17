@@ -56,15 +56,19 @@
                 <form id="formNuevaInscripcion" class="cuerpo-formulario" novalidate>
                     <div class="fila-campos">
                         <div class="campo-grupo">
-                            <label for="inputCursoId">ID del Curso</label>
-                            <input type="number" id="inputCursoId" required min="1">
+                            <label for="selectCurso">Curso</label>
+                            <select id="selectCurso" required>
+                                <option value="">Cargando cursos...</option>
+                            </select>
                             <span id="error-id_curso" class="error-mensaje"></span>
                         </div>
                     </div>
                     <div class="fila-campos">
                         <div class="campo-grupo">
-                            <label for="inputEstudianteId">ID del Estudiante</label>
-                            <input type="number" id="inputEstudianteId" required min="1">
+                            <label for="selectEstudiante">Estudiante</label>
+                            <select id="selectEstudiante" required>
+                                <option value="">Cargando estudiantes...</option>
+                            </select>
                             <span id="error-id_estudiante" class="error-mensaje"></span>
                         </div>
                     </div>

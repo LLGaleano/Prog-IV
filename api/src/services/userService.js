@@ -1,6 +1,10 @@
 const pool = require('../db/connection');
 
 const find = async (username, password) => {
+    // probando q ande
+    console.log("=== INTENTO DE LOGIN ===");
+    console.log("Usuario recibido:", username);
+    console.log("Contraseña recibida:", password);
     const result = await pool.query(`
         SELECT
             id_usuario,
@@ -29,6 +33,11 @@ const findById = async (idUsuario) => {
     `, [idUsuario]);
 
     return result.rows[0];
+};
+
+const createCurso = async (cursoData) => {
+    // Simplemente asegúrate que pase el objeto entero
+    return await cursosRepository.create(cursoData);
 };
 
 module.exports = {

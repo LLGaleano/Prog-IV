@@ -60,19 +60,31 @@ const createCurso = async (req, res) => {
             return res.status(400).json({ errors: errors.array() });
         }
 
-        const cursoData = req.body;
+        const { nombre, descripcion, fecha_inicio, cantidad_horas, inscriptos_max, id_curso_estado } = req.body;
 
-        const existingNombre = await cursoService.searchCursoByNombre(cursoData.nombre);
+        const cursoData = {
+            nombre,
+            descripcion,
+            fecha_inicio,
+            cantidad_horas,
+            inscriptos_max,
+            id_curso_estado
+        };
+
+        const existingNombre = await cursoService.searchCursoByNombre(nombre);
         if (existingNombre) {
             return res.status(409).json({ error: 'Ya existe un curso registrado con ese nombre.' });
         }
 
-        cursoData.id_usuario_modificacion = req.user ? req.user.id_usuario : 1; 
+        cursoData.id_usuario_modificacion = req.user ? req.user.id_usuario : 1;
 
         const newCurso = await cursoService.createCurso(cursoData);
         res.status(201).json(cursosDTO(newCurso)); 
     } catch (error) {
-        console.error(error);
+        console.error("DETALLE DEL ERROR:", error);
+        
+        console.log("Datos recibidos en controller:", req.body);
+        
         res.status(500).json({ error: 'Error interno al crear el curso.' });
     }
 };

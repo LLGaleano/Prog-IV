@@ -126,9 +126,24 @@ const deleteInscripcion = async (req, res) => {
     }
 };
 
+const getCursos = async (req, res) => {
+    try {
+        const cursos = await inscripcionService.getCursos();
+        const responseData = cursos.map(c => ({
+            idCurso: c.id_curso,
+            nombre: c.nombre
+        }));
+        res.status(200).json(responseData);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Error al obtener los cursos.' });
+    }
+};
+
 module.exports = {
     getInscripciones,
     searchInscripcion,
     createInscripcion,
-    deleteInscripcion
+    deleteInscripcion,
+    getCursos
 };

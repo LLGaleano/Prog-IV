@@ -11,6 +11,7 @@
     <script src="js/auth.js"></script>
     <script src="js/cursos.js" defer></script>
 </head>
+
 <body>
     <header class="header-principal"> 
         <div class="logo-img hd">
@@ -64,7 +65,7 @@
                             <th>Fecha Inicio</th>
                             <th>Inscriptos</th>
                             <th>Cupo</th>
-                            <th>Ver</th>
+                            <th>Acciones</th>
                         </tr>
                     </thead>
                     <tbody id="tbody">
@@ -82,10 +83,53 @@
                     Siguiente <i class="bx bx-chevron-right"></i>
                 </button>
             </div>
-
         </main>
-</div>
+</div> 
+    <dialog id="modal-curso" class="modal-principal">
+        <div class="modal-header">
+            <h3 id="modal-titulo">Detalles del Curso</h3>
+            <button id="btn-cerrar-modal" class="btn-cerrar-modal" onclick="cerrarModal()">&times;</button>
+        </div>
         
-    
+        <div class="modal-body">
+            <div class="campo">
+                <label>Nombre del Curso</label>
+                <input type="text" id="modalNombre" readonly required>
+            </div>
+            
+            <div class="campo">
+                <label>Descripción</label>
+                <textarea id="modalDesc" readonly rows="3" style="resize: none;" required></textarea>
+            </div>
+            
+            <div style="display: flex; gap: 15px;">
+                <div class="campo" style="flex: 1;">
+                    <label>ID Curso</label>
+                    <input type="text" id="modalId" readonly>
+                </div>
+                <div class="campo" style="flex: 1;">
+                    <label>Fecha de Inicio</label>
+                    <input type="date" id="modalFecha" readonly required>
+                </div>
+            </div>
+
+            <div style="display: flex; gap: 15px;">
+                <div class="campo" style="flex: 1;">
+                    <label>Cant. Horas</label>
+                    <input type="number" id="modalHoras" readonly required>
+                </div>
+                <div class="campo" style="flex: 1;">
+                    <label>Cupo Máx.</label>
+                    <input type="number" id="modalCupo" readonly required>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal-footer">
+            <button id="btn-guardar-modal" class="btn-guardar-modal oculto" onclick="guardarEdicionCurso()">Guardar Cambios</button>
+            <button class="btn-cancelar" onclick="cerrarModal()" style="margin-left: 15px;">Cerrar</button>
+        </div>
+    </dialog>
 </body>
+
 </html>

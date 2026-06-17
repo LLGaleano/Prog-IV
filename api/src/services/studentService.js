@@ -1,8 +1,6 @@
 const studentRepository = require('../db/studentRepository');
 
 const getAllStudents = async (filter = {}, limit = 20, offset = 0, order = 'id_estudiante', asc = 'ASC') => {
-    
-    // Mandamos los filtros nativos de JS y las opciones de paginación puras al repositorio
     const { rows, total } = await studentRepository.getAllWithPagination(filter, limit, offset, order, asc);
 
     return {

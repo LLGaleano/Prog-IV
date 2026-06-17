@@ -74,13 +74,22 @@ const getByNombre = async (nombre) => {
 };
 
 const create = async (cursoData) => {
-    const { nombre, descripcion, fecha_inicio, cantidad_horas, inscriptos_max, id_curso_estado, id_usuario_modificacion } = cursoData;
+    console.log("DEBUG - Datos recibidos en Repository:", Object.keys(cursoData));
+    console.log("DEBUG - Valores recibidos:", Object.values(cursoData));
     const result = await pool.query(
-        `INSERT INTO public.cursos
+        `INSERT INTO cursos
         (nombre, descripcion, fecha_inicio, cantidad_horas, inscriptos_max, id_curso_estado, id_usuario_modificacion, fecha_hora_modificacion)
         VALUES ($1, $2, $3, $4, $5, $6, $7, NOW())
         RETURNING *`,
-        [nombre, descripcion, fecha_inicio, cantidad_horas, inscriptos_max, id_curso_estado, id_usuario_modificacion]
+        [
+            cursoData.nombre, 
+            cursoData.descripcion, 
+            cursoData.fecha_inicio, 
+            cursoData.cantidad_horas, 
+            cursoData.inscriptos_max, 
+            cursoData.id_curso_estado, 
+            cursoData.id_usuario_modificacion 
+        ]
     );
     return result.rows[0];
 };
@@ -100,7 +109,7 @@ const modify = async (id, cursoData) => {
 };
 
 const softDelete = async (id, id_usuario_modificacion) => {
-    const estadoBorradoLogico = 0; 
+    const estadoBorradoLogico = 2; 
 
     const result = await pool.query(`
         UPDATE public.cursos
